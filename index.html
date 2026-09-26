@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Winter Summit Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#EBEFF3; --surface:#FFFFFF; --surface-2:#F4F6F9; --ink:#15202B; --muted:#5A6775; --line:#D3DAE2;
+  --accent:#1F4E79; --accent-ink:#FFFFFF;
+  /* trail-blaze colours, one per destination */
+  --t-red:#C8322B; --t-blue:#2366B8; --t-green:#1E8A4C; --t-yellow:#C99A06;
+  --good:#1E8A4C; --warn:#B7791F; --bad:#C8322B;
+  --display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#0E141A; --surface:#161F28; --surface-2:#1C2733; --ink:#E6ECF2; --muted:#94A3B3; --line:#2A3847;
+    --accent:#7FB2E5; --accent-ink:#0E141A;
+    --t-red:#F0625A; --t-blue:#6AA4F0; --t-green:#4CC27E; --t-yellow:#E7C24A;
+    --good:#4CC27E; --warn:#E3A948; --bad:#F0625A;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#0E141A; --surface:#161F28; --surface-2:#1C2733; --ink:#E6ECF2; --muted:#94A3B3; --line:#2A3847;
+  --accent:#7FB2E5; --accent-ink:#0E141A;
+  --t-red:#F0625A; --t-blue:#6AA4F0; --t-green:#4CC27E; --t-yellow:#E7C24A;
+  --good:#4CC27E; --warn:#E3A948; --bad:#F0625A;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--body);}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:28px 64px;display:grid;gap:36px}
+@media (min-width:720px){.wrap{padding-inline:28px}}
+h1,h2,h3{font-family:var(--display);font-stretch:78%;line-height:1.08;margin:0;text-wrap:balance;letter-spacing:-.005em}
+h1{font-size:clamp(34px,6vw,58px);font-weight:800}
+h2{font-size:28px;font-weight:750}
+h3{font-size:20px;font-weight:700}
+p{margin:0}
+a{color:var(--accent)}
+.eyebrow{font:600 12px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+header.top{display:grid;gap:14px}
+header.top .lede{max-width:68ch;color:var(--muted)}
+.blazes{display:flex;gap:6px;align-items:center}
+.blaze{width:26px;height:18px;border-radius:2px;background:#fff;position:relative;border:1px solid var(--line)}
+.blaze::after{content:"";position:absolute;inset:5px 0;background:var(--c)}
+
+/* controls */
+.controls{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;gap:18px}
+@media (min-width:900px){.controls{grid-template-columns:1.1fr 1.2fr 1.4fr}}
+.ctl{display:grid;gap:10px;align-content:start}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{font:600 14px var(--body);border:1px solid var(--line);background:var(--surface-2);color:var(--ink);padding:9px 12px;border-radius:6px;cursor:pointer;text-align:left}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.seg button small{display:block;font-weight:400;opacity:.8}
+.pax{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pax label{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-weight:500}
+input[type=number]{width:62px;font:500 15px var(--mono);padding:5px 6px;border:1px solid var(--line);border-radius:5px;background:var(--surface);color:var(--ink)}
+.weights{display:grid;gap:6px}
+.weights label{display:grid;grid-template-columns:128px 1fr 22px;align-items:center;gap:8px;font-size:14px}
+input[type=range]{accent-color:var(--accent);width:100%}
+button:focus-visible,input:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ranking */
+.rank{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(245px,1fr))}
+.dest{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:12px;align-content:start;position:relative;overflow:hidden}
+.dest .flag{position:absolute;top:0;left:0;right:0;height:6px;background:var(--c)}
+.dest .head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding-top:4px}
+.pos{font:800 34px/1 var(--display);font-stretch:70%;color:var(--c)}
+.dest .country{font-size:13px;color:var(--muted)}
+.big{font:600 26px/1.1 var(--mono);font-variant-numeric:tabular-nums}
+.kv{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:14px}
+.kv dt{color:var(--muted)} .kv dd{margin:0;text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.bar{height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--c)}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:12px;padding:2px 8px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);white-space:nowrap}
+.chip.good{border-color:color-mix(in srgb,var(--good) 45%,transparent);color:var(--good)}
+.chip.warn{border-color:color-mix(in srgb,var(--warn) 45%,transparent);color:var(--warn)}
+.chip.bad{border-color:color-mix(in srgb,var(--bad) 45%,transparent);color:var(--bad)}
+
+section{display:grid;gap:14px}
+.sechead{display:grid;gap:6px;max-width:75ch}
+
+/* travel matrix */
+.tablebox{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:880px}
+th,td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+thead th{font:700 15px var(--display);font-stretch:85%;background:var(--surface-2)}
+thead th span{display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--c);margin-right:6px}
+tbody th{font-weight:600;white-space:nowrap;width:120px}
+tbody th small{display:block;font-weight:400;color:var(--muted)}
+td .line1{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+td .route{font-size:13px;color:var(--muted);margin-top:4px;max-width:38ch}
+td .links{margin-top:6px;font-size:13px;display:flex;gap:10px;flex-wrap:wrap}
+tr:last-child td,tr:last-child th{border-bottom:0}
+.best{outline:2px solid color-mix(in srgb,var(--good) 55%,transparent);outline-offset:-2px;border-radius:4px}
+
+/* housing */
+.houses{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.house{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--c);border-radius:10px;padding:16px;display:grid;gap:10px;align-content:start}
+.house .quote{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:14px}
+.house .quote input{width:110px}
+.house ul{margin:0;padding-left:18px;font-size:14px;display:grid;gap:4px}
+.linkrow{display:flex;flex-wrap:wrap;gap:6px}
+.linkrow a{font-size:13px;font-weight:600;text-decoration:none;border:1px solid var(--line);padding:5px 9px;border-radius:6px;background:var(--surface-2)}
+.linkrow a:hover{border-color:var(--accent)}
+
+.two{display:grid;gap:14px}
+@media (min-width:860px){.two{grid-template-columns:1fr 1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:10px;align-content:start}
+.panel ul{margin:0;padding-left:18px;display:grid;gap:4px}
+textarea{width:100%;min-height:170px;font:13px/1.5 var(--mono);padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);color:var(--ink);resize:vertical}
+.btn{font:600 14px var(--body);background:var(--accent);color:var(--accent-ink);border:0;padding:9px 14px;border-radius:6px;cursor:pointer;justify-self:start}
+.note{font-size:13px;color:var(--muted);max-width:90ch}
+footer{font-size:13px;color:var(--muted);display:grid;gap:8px}
+footer ul{margin:0;padding-left:18px;columns:2 320px}
+@media (prefers-reduced-motion:no-preference){.bar i{transition:width .35s ease}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="blazes" aria-hidden="true">
+    <span class="blaze" style="--c:var(--t-red)"></span><span class="blaze" style="--c:var(--t-blue)"></span><span class="blaze" style="--c:var(--t-green)"></span><span class="blaze" style="--c:var(--t-yellow)"></span>
+  </div>
+  <p class="eyebrow">New Year 2026/27 · car-free mountain trip</p>
+  <h1>Winter Summit Planner</h1>
+  <p class="lede">Four mountain bases reachable without a car, compared for a group travelling from Paris, Strasbourg, Berlin and Chișinău. Choose the dates, say how many people come from each city, and weight what matters. Each destination carries a trail-blaze colour, as on Tatra and Carpathian hiking signs.</p>
+</header>
+
+<div class="controls" role="group" aria-label="Trip settings">
+  <div class="ctl">
+    <span class="eyebrow">Dates</span>
+    <div class="seg" id="period"></div>
+    <p class="note" id="periodNote"></p>
+  </div>
+  <div class="ctl">
+    <span class="eyebrow">Travellers per departure city</span>
+    <div class="pax" id="pax"></div>
+    <p class="note">4 bedrooms with real beds ≈ 8 people in doubles, up to 10–12 with some twin/single rooms.</p>
+  </div>
+  <div class="ctl">
+    <span class="eyebrow">What matters (0 = ignore)</span>
+    <div class="weights" id="weights"></div>
+  </div>
+</div>
+
+<section aria-labelledby="h-rank">
+  <div class="sechead">
+    <h2 id="h-rank">Ranking</h2>
+    <p class="muted">Cost is the midpoint of estimated travel + housing + tourist tax, per person. Enter a real quote under Housing and it replaces the estimate.</p>
+  </div>
+  <div class="rank" id="rank"></div>
+</section>
+
+<section aria-labelledby="h-travel">
+  <div class="sechead">
+    <h2 id="h-travel">Getting there without a car</h2>
+    <p class="muted">Door-to-door time one way and return fare per person, estimated for the holiday peak. The green outline marks the easiest destination for each city. Search links open with your dates filled in.</p>
+  </div>
+  <div class="tablebox"><table id="travel"></table></div>
+</section>
+
+<section aria-labelledby="h-house">
+  <div class="sechead">
+    <h2 id="h-house">Housing: whole place, 4 bedrooms, real beds</h2>
+    <p class="muted">Nightly ranges for an entire house or chalet sleeping about 8 in beds, based on typical holiday rates seen on local and international platforms. Prices for these dates are not all published yet, and live listings could not be checked from here: use the pre-filtered searches and type the best quote you find.</p>
+  </div>
+  <div class="houses" id="houses"></div>
+</section>
+
+<section class="two" aria-label="Beds and practical notes">
+  <div class="panel">
+    <h3>Making sure there are no sofa beds</h3>
+    <ul>
+      <li>On Airbnb, open “Where you'll sleep”: every bedroom should show a double, queen or single beds. Skip listings that count a “sofa bed” or “floor mattress” as a sleeping place.</li>
+      <li>On Booking.com, look at the per-room bed list. “Sofa bed” in any bedroom is a no.</li>
+      <li>Local words for sofa bed: PL <em>rozkładana sofa / kanapa</em>, SK <em>rozkladací gauč</em>, RO <em>canapea extensibilă</em>, DE/IT <em>Schlafcouch / divano letto</em>.</li>
+      <li>For New Year, hosts often require 5–7 nights. Ask before you give up on a listing that shows no availability.</li>
+    </ul>
+  </div>
+  <div class="panel">
+    <h3>Message to send hosts</h3>
+    <textarea id="msg" aria-label="Message template to hosts"></textarea>
+    <button class="btn" id="copy" type="button">Copy message</button>
+  </div>
+</section>
+
+<section class="two" aria-label="Notes">
+  <div class="panel">
+    <h3>Why these four</h3>
+    <ul>
+      <li><strong>Zakopane (PL)</strong>: the classic Tatra New Year, with the biggest party and the biggest crowds. Easiest from Paris and Berlin via Kraków.</li>
+      <li><strong>High Tatras (SK)</strong>: the same mountains on the quieter Slovak side. The TEŽ electric railway links Poprad, Starý Smokovec, Tatranská Lomnica and Štrbské Pleso, so a car is never needed.</li>
+      <li><strong>Sinaia / Bușteni (RO)</strong>: Bucegi mountains on the Bucharest–Brașov main line. By far the easiest and cheapest for Chișinău, with a sleeper train straight to Bucharest.</li>
+      <li><strong>San Candido / Innichen (IT)</strong>, Alta Pusteria, Dolomites: a town with its own railway station, a ski slope at the edge of town, a gondola with its own train stop at Versciaco, and the Tre Cime area next door. The Dolomites benchmark, and the most expensive option.</li>
+      <li><strong>Piešťany</strong> was suggested, but it is a spa town in the lowlands of western Slovakia at about 160 m, without real mountains. The High Tatras are the Slovak mountain choice.</li>
+    </ul>
+  </div>
+  <div class="panel">
+    <h3>Calendar notes</h3>
+    <ul>
+      <li>30 Dec 2026 is a Wednesday, 2 Jan 2027 a Saturday, 6 Jan 2027 a Wednesday.</li>
+      <li>6 January (Epiphany) is a public holiday in Poland, Slovakia and Italy: slopes and trains are busy until the evening of the 6th.</li>
+      <li>1–2 January are public holidays in Romania; Chișinău travellers celebrating Orthodox Christmas on 7 January may prefer the later dates.</li>
+      <li>Both date options share 2–5 January. If the group splits, a place booked 30 Dec–6 Jan (7 nights) covers everyone and meets most minimum stays.</li>
+      <li>Book trains as soon as sales open: DB/ÖBB sell about 6 months ahead, PKP Intercity about 30 days, CFR about 30–60 days.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <p><strong>How to read the numbers.</strong> All prices are estimates in euros, compiled in September 2026 from published schedules, route guides and holiday listing rates. Fares move quickly for New Year. Treat every figure as a starting point and replace housing with real quotes.</p>
+  <p>Sources used:</p>
+  <ul>
+    <li><a href="https://www.seat61.com/trains-and-routes/berlin-to-krakow-by-train.htm" target="_blank" rel="noopener">Seat61: Berlin to Kraków by train</a></li>
+    <li><a href="https://www.seat61.com/trains-and-routes/bucharest-to-chisinau-by-train.htm" target="_blank" rel="noopener">Seat61: Chișinău–Bucharest sleeper</a></li>
+    <li><a href="https://back-on-track.eu/night-train/cfmcfr-chisinau-bucuresti/" target="_blank" rel="noopener">Back-on-Track: Prietenia night train</a></li>
+    <li><a href="https://www.routesonline.com/airports/5277/bratislava-international-airport/news/299665531/wizz-air-launches-inaugural-flight-between-bratislava-and-koice-and-announces-two-new-routes-for-2026/" target="_blank" rel="noopener">Wizz Air Bratislava network incl. Chișinău</a></li>
+    <li><a href="https://www.moldpres.md/eng/economy/summer-season-2026-chisinau-international-airport-expands-connections-destinations" target="_blank" rel="noopener">Moldpres: Chișinău airport routes 2026</a></li>
+    <li><a href="https://www.thetrainline.com/en/train-times/munich-hbf-to-san-candido-innichen" target="_blank" rel="noopener">Trainline: Munich → San Candido/Innichen</a></li>
+    <li><a href="https://www.hauzi.sk/vysoke-tatry/silvester" target="_blank" rel="noopener">Hauzi.sk: High Tatras New Year chalets</a></li>
+    <li><a href="https://sylwester.nocowanie.pl/zakopane/" target="_blank" rel="noopener">Nocowanie.pl: Zakopane New Year</a></li>
+    <li><a href="https://zakopanedomki.com/domki-w-gorach-sylwester-i-swieta.html" target="_blank" rel="noopener">ZakopaneDomki: holiday houses and minimum stays</a></li>
+    <li><a href="https://www.turistinfo.ro/busteni/revelion-busteni.html" target="_blank" rel="noopener">Turistinfo.ro: Revelion Bușteni</a></li>
+    <li><a href="https://ziare.com/vacanta/stiri-vacanta/vile-cabane-inchiriat-revelion-pret-1715619" target="_blank" rel="noopener">Ziare.com: New Year villa prices in Prahova</a></li>
+    <li><a href="https://www.bookingsuedtirol.com/innichensancandido/ferienwohnung" target="_blank" rel="noopener">Booking Südtirol: San Candido apartments</a></li>
+  </ul>
+</footer>
+</div>
+
+<script>
+const PERIODS = {
+  A:{label:"30 Dec – 5 Jan", sub:"6 nights · includes New Year's Eve", in:"2026-12-30", out:"2027-01-05", nights:6,
+     note:"Peak of the season. Expect minimum stays of 5–7 nights in Zakopane and South Tyrol, and New Year packages with a gala dinner in Romania."},
+  B:{label:"2 Jan – 6 Jan", sub:"4 nights · after New Year", in:"2027-01-02", out:"2027-01-06", nights:4,
+     note:"Still high season up to Epiphany (6 Jan), but prices fall 30–50% after New Year's Eve and short stays are easier to find."}
+};
+const ORIGINS = [
+  {id:"PAR", name:"Paris", air:"CDG"},
+  {id:"SXB", name:"Strasbourg", air:"BSL", sub:"via Basel-Mulhouse / Frankfurt"},
+  {id:"BER", name:"Berlin", air:"BER"},
+  {id:"KIV", name:"Chișinău", air:"RMO"}
+];
+const DESTS = [
+  {id:"zak", name:"Zakopane", country:"Poland · Tatras · 838 m, lifts to 1,987 m", c:"--t-red", air:"KRK", q:"Zakopane, Poland",
+   scores:{snow:3, carfree:4, ski:3, quiet:1},
+   tags:[["Biggest New Year party","good"],["Very crowded","warn"],["Cheapest housing","good"]],
+   house:{A:[450,900],B:[250,520], tax:1, min:"5–7 nights around New Year is common", local:[["Nocowanie.pl New Year","https://sylwester.nocowanie.pl/zakopane/"],["ZakopaneDomki","https://zakopanedomki.com/domki-w-gorach-sylwester-i-swieta.html"]],
+     tips:["Stay in Kościelisko or near the Kuźnice/Kasprowy bus line to skip Krupówki traffic.","Białka Tatrzańska (best ski area nearby) is 40 min by bus.","Many ‘domki’ list 4 bedrooms plus a sofa bed: count only the bedrooms."]},
+   travel:{
+     PAR:{h:7.5, cost:[160,340], route:"Fly CDG/ORY/Beauvais → Kraków (easyJet, Transavia, Ryanair, ~2h15). Airport train to Kraków Główny, then bus (every 30–60 min, ~2h15) or PKP Intercity train (~2h30) to Zakopane.", links:[["Flights","gf:CDG:KRK"],["Kraków→Zakopane trains","https://www.intercity.pl/en/"]]},
+     SXB:{h:9, cost:[180,380], route:"Train to Basel-Mulhouse airport (~1h30 via Saint-Louis) and fly easyJet to Kraków, or ICE to Frankfurt (~2h) and fly LOT/Lufthansa. Then bus or train to Zakopane.", links:[["Flights from BSL","gf:BSL:KRK"],["Flights from FRA","gf:FRA:KRK"]]},
+     BER:{h:10, cost:[70,150], route:"Direct EuroCity Berlin → Kraków Główny (~7h; check whether it leaves from Gesundbrunnen or Hbf after the December timetable change), then 2h15 by bus or train.", links:[["Seat61 guide","https://www.seat61.com/trains-and-routes/berlin-to-krakow-by-train.htm"],["DB tickets","https://int.bahn.de/en"]]},
+     KIV:{h:11, cost:[220,420], route:"LOT Chișinău → Warsaw (~1h50), then PKP Intercity direct Warszawa → Zakopane (~6h) or a short flight to Kraków and bus.", links:[["Flights","gf:RMO:WAW"],["PKP Intercity","https://www.intercity.pl/en/"]]}
+   }},
+  {id:"tat", name:"High Tatras", country:"Slovakia · Starý Smokovec / T. Lomnica · 1,000 m, lifts to 2,190 m", c:"--t-blue", air:"BTS", q:"Starý Smokovec, Slovakia",
+   scores:{snow:4, carfree:5, ski:4, quiet:4},
+   tags:[["Electric mountain railway","good"],["Quiet, same peaks as Zakopane","good"],["Longer trip from France","warn"]],
+   house:{A:[320,650],B:[200,420], tax:2.5, min:"3–5 nights; New Year prices often ‘on request’", local:[["Hauzi.sk New Year chalets","https://www.hauzi.sk/vysoke-tatry/silvester"],["Hauzi.sk Starý Smokovec","https://www.hauzi.sk/chaty-chalupy/mesto-vysoke-tatry-stary-smokovec"]],
+     tips:["Pick a chalet within walking distance of a TEŽ stop (Starý Smokovec, Tatranská Lomnica, Horný Smokovec).","Skiing: Tatranská Lomnica (to Skalnaté pleso) and Štrbské Pleso, both by TEŽ train.","Slovak ‘chaty’ are often rented whole with 4–6 bedrooms, frequently with sauna."]},
+   travel:{
+     PAR:{h:10, cost:[200,400], route:"Fly CDG → Vienna or Beauvais → Bratislava, then train to Poprad-Tatry (~4h from Bratislava) and the TEŽ electric railway up to Starý Smokovec (25 min). Alternative: fly via Vienna or Warsaw to Košice, then 1h15 by train.", links:[["Flights to BTS","gf:BVA:BTS"],["Flights to VIE","gf:CDG:VIE"],["Slovak trains (ZSSK)","https://www.zssk.sk/en/"]]},
+     SXB:{h:11, cost:[200,420], route:"Fly Basel-Mulhouse or Frankfurt → Vienna or Prague, then train to Poprad-Tatry. The Prague → Poprad night train saves a hotel night.", links:[["Flights FRA→PRG","gf:FRA:PRG"],["Flights BSL→VIE","gf:BSL:VIE"],["RegioJet","https://regiojet.com/"]]},
+     BER:{h:13, cost:[90,200], route:"EuroCity Berlin → Prague (~4h30), then the night train Prague → Poprad-Tatry (~9h, couchette or sleeper). You wake up below the Tatras.", links:[["DB tickets","https://int.bahn.de/en"],["ČD night train","https://www.cd.cz/en/"],["RegioJet","https://regiojet.com/"]]},
+     KIV:{h:10, cost:[160,340], route:"Wizz Air Chișinău → Bratislava (direct), then train Bratislava → Poprad-Tatry (~4h) and the TEŽ railway.", links:[["Flights","gf:RMO:BTS"],["Slovak trains (ZSSK)","https://www.zssk.sk/en/"]]}
+   }},
+  {id:"sin", name:"Sinaia / Bușteni", country:"Romania · Bucegi · 800–900 m, lifts to 2,000 m", c:"--t-green", air:"OTP", q:"Sinaia, Romania",
+   scores:{snow:3, carfree:4, ski:3, quiet:2},
+   tags:[["Best for Chișinău","good"],["Direct flights from all western cities","good"],["Busy with Bucharest crowds","warn"]],
+   house:{A:[450,1000],B:[200,420], tax:0.5, min:"3–4 nights over ‘Revelion’, often with gala dinner", local:[["Turistinfo Revelion Bușteni","https://www.turistinfo.ro/busteni/revelion-busteni.html"],["Turistinfo Revelion Sinaia","https://www.turistinfo.ro/sinaia/revelion-sinaia.html"],["Carta.ro Sinaia","https://carta.ro/revelion-sinaia/"]],
+     tips:["Whole villas (‘vilă închiriată integral’) with 4–5 bedrooms are common; a 2021 Sinaia example with 4 bedrooms and 4 bathrooms cost about €2,200 for New Year.","Skiing: Sinaia gondola to Cota 2000; Predeal and Azuga are one or two stops further on the same line.","Peleș Castle in Sinaia is a good bad-weather day."]},
+   travel:{
+     PAR:{h:8, cost:[180,380], route:"Fly CDG/ORY/Beauvais → Bucharest Otopeni (Air France, TAROM, Wizz, ~3h). Train from the airport station to Bucharest Nord, then a CFR train to Sinaia (1h30–2h) or Bușteni (+10 min).", links:[["Flights","gf:CDG:OTP"],["CFR tickets","https://bilete.cfrcalatori.ro/en-GB"]]},
+     SXB:{h:10, cost:[200,420], route:"Frankfurt → Bucharest (Lufthansa/TAROM direct) or Basel-Mulhouse → Bucharest (check winter days), then train.", links:[["Flights FRA","gf:FRA:OTP"],["Flights BSL","gf:BSL:OTP"]]},
+     BER:{h:8, cost:[150,340], route:"Fly Berlin → Bucharest direct (~2h15), then airport train and CFR train to Sinaia.", links:[["Flights","gf:BER:OTP"],["CFR tickets","https://bilete.cfrcalatori.ro/en-GB"]]},
+     KIV:{h:16, cost:[60,130], route:"‘Prietenia’ sleeper train: Chișinău 16:50 → București Nord 06:38 (1-, 2- and 4-berth cabins), then a morning train to Sinaia. The long time is mostly spent asleep. A 1h flight to Otopeni is the fast alternative.", links:[["Seat61 guide","https://www.seat61.com/trains-and-routes/bucharest-to-chisinau-by-train.htm"],["Flights","gf:RMO:OTP"]]}
+   }},
+  {id:"dol", name:"San Candido", country:"Italy · Dolomites, Alta Pusteria · 1,175 m, lifts to 2,200 m", c:"--t-yellow", air:"VCE", q:"San Candido, Italy",
+   scores:{snow:5, carfree:5, ski:5, quiet:4},
+   tags:[["Train station in town","good"],["Dolomiti Superski","good"],["Most expensive","bad"]],
+   house:{A:[750,1500],B:[550,1100], tax:4, min:"7 nights common over Christmas–Epiphany", local:[["Booking Südtirol San Candido","https://www.bookingsuedtirol.com/innichensancandido/ferienwohnung"],["Südtirol.info stays","https://www.suedtirol.info/en/en/accommodations/plp/tvs/innichen---san-candido"]],
+     tips:["Single 4-bedroom units are rare. Two 2-bedroom apartments in the same residence is the usual solution.","Skiing: Monte Baranci in town, Monte Elmo and Croda Rossa (3 Zinnen Dolomites) from the Versciaco gondola, which has its own train stop.","Ask the host for the guest card: in much of South Tyrol it includes free regional buses and trains."]},
+   travel:{
+     PAR:{h:10, cost:[180,380], route:"Fly to Venice (~1h45), then Cortina Express bus to Cortina (~2h15) and SAD bus 445 to Dobbiaco and San Candido (~1h). All-train option: TGV Paris Est → Munich (~5h40), then Munich → Innsbruck → Fortezza → San Candido (~5–6h), best with a night in Munich.", links:[["Flights","gf:CDG:VCE"],["Cortina Express","https://www.cortinaexpress.it/en/"],["Trains Munich → Innichen","https://www.thetrainline.com/en/train-times/munich-hbf-to-san-candido-innichen"]]},
+     SXB:{h:10, cost:[130,260], route:"Train only: TGV/ICE Strasbourg → Munich (~4h), then Munich → Innsbruck → Fortezza/Franzensfeste → San Candido/Innichen (~5–6h, 2 changes). No airport at all.", links:[["DB tickets","https://int.bahn.de/en"],["ÖBB","https://www.oebb.at/en/"]]},
+     BER:{h:10.5, cost:[130,280], route:"ICE Berlin → Munich (~4h), then train to San Candido (~5–6h). Or fly Berlin → Venice and take the Cortina Express and bus 445.", links:[["DB tickets","https://int.bahn.de/en"],["Flights","gf:BER:VCE"]]},
+     KIV:{h:9, cost:[160,340], route:"Wizz Air Chișinău → Venice (direct), then Cortina Express and bus 445. Alternative: Wizz to Bergamo and train via Verona, Bolzano and Fortezza (~5h).", links:[["Flights","gf:RMO:VCE"],["Cortina Express","https://www.cortinaexpress.it/en/"]]}
+   }}
+];
+const WEIGHTS = [
+  {id:"cost", label:"Low cost", def:5},
+  {id:"time", label:"Short journeys", def:3},
+  {id:"snow", label:"Snow reliability", def:3},
+  {id:"ski", label:"Skiing", def:2},
+  {id:"carfree", label:"Easy without car", def:3},
+  {id:"quiet", label:"Calm, few crowds", def:1}
+];
+
+const state = {period:"A", pax:{PAR:2,SXB:2,BER:2,KIV:2}, w:{}, quote:{}};
+WEIGHTS.forEach(w=>state.w[w.id]=w.def);
+try{ const s=JSON.parse(localStorage.getItem("wsp-state")||"null"); if(s){Object.assign(state.pax,s.pax||{});Object.assign(state.w,s.w||{});state.quote=s.quote||{};if(PERIODS[s.period])state.period=s.period;} }catch(e){}
+function save(){ try{localStorage.setItem("wsp-state",JSON.stringify(state));}catch(e){} }
+
+const $=s=>document.querySelector(s);
+const eur=n=>"€"+Math.round(n).toLocaleString("en-GB");
+const mid=a=>(a[0]+a[1])/2;
+const P=()=>PERIODS[state.period];
+const totalPax=()=>Object.values(state.pax).reduce((a,b)=>a+(+b||0),0);
+
+function gf(from,to){ const p=P(); return "https://www.google.com/travel/flights?q="+encodeURIComponent(`Flights from ${from} to ${to} on ${p.in} through ${p.out}`); }
+function link(u){ return u.startsWith("gf:")? gf(...u.slice(3).split(":")) : u; }
+function searchLinks(d){
+  const p=P(), n=Math.max(totalPax(),1), q=encodeURIComponent(d.q);
+  return [
+    ["Airbnb", `https://www.airbnb.com/s/${q}/homes?checkin=${p.in}&checkout=${p.out}&adults=${n}&min_bedrooms=4&room_types%5B%5D=Entire%20home%2Fapt`],
+    ["Booking.com", `https://www.booking.com/searchresults.html?ss=${q}&checkin=${p.in}&checkout=${p.out}&group_adults=${n}&no_rooms=1&group_children=0&nflt=privacy_type%3D3%3Bentire_place_bedroom_count%3D4`],
+    ["Vrbo", `https://www.vrbo.com/search?destination=${q}&startDate=${p.in}&endDate=${p.out}&adults=${n}&minBedrooms=4`]
+  ];
+}
+
+function calc(d){
+  const p=P(), pax=Math.max(totalPax(),1), key=d.id+state.period;
+  const hr=d.house[state.period];
+  const quote=+state.quote[key]||0;
+  const houseLow = quote||hr[0]*p.nights, houseHigh = quote||hr[1]*p.nights;
+  const tax=d.house.tax*p.nights*pax;
+  let tLow=0,tHigh=0,hours=0;
+  ORIGINS.forEach(o=>{ const n=+state.pax[o.id]||0, t=d.travel[o.id]; tLow+=n*t.cost[0]; tHigh+=n*t.cost[1]; hours+=n*t.h; });
+  const tp=totalPax()||1;
+  return {houseLow,houseHigh,tax,quote:!!quote,
+    ppLow:(houseLow+tax)/pax + tLow/tp, ppHigh:(houseHigh+tax)/pax + tHigh/tp,
+    housePP:((houseLow+houseHigh)/2+tax)/pax, travelPP:(tLow+tHigh)/2/tp, hours:hours/tp};
+}
+
+function render(){
+  const p=P();
+  $("#period").innerHTML=Object.entries(PERIODS).map(([k,v])=>`<button type="button" data-p="${k}" aria-pressed="${k===state.period}">${v.label}<small>${v.sub}</small></button>`).join("");
+  $("#periodNote").textContent=p.note;
+
+  const res=DESTS.map(d=>({d,r:calc(d)}));
+  const costs=res.map(x=>(x.r.ppLow+x.r.ppHigh)/2), hrs=res.map(x=>x.r.hours);
+  const norm=(v,arr,inv)=>{const mn=Math.min(...arr),mx=Math.max(...arr); if(mx===mn)return 1; const t=(v-mn)/(mx-mn); return inv?1-t:t;};
+  const wsum=Object.values(state.w).reduce((a,b)=>a+b,0)||1;
+  res.forEach((x,i)=>{
+    const s={cost:norm(costs[i],costs,true), time:norm(hrs[i],hrs,true)};
+    ["snow","ski","carfree","quiet"].forEach(k=>s[k]=(x.d.scores[k]-1)/4);
+    x.score=Object.keys(state.w).reduce((a,k)=>a+state.w[k]*s[k],0)/wsum*100;
+  });
+  const ranked=[...res].sort((a,b)=>b.score-a.score);
+
+  $("#rank").innerHTML=ranked.map((x,i)=>{const d=x.d,r=x.r;return `
+    <article class="dest" style="--c:var(${d.c})">
+      <div class="flag"></div>
+      <div class="head"><div><h3>${d.name}</h3><div class="country">${d.country}</div></div><div class="pos">${i+1}</div></div>
+      <div><div class="eyebrow">Per person, all in</div><div class="big">${eur(r.ppLow)}–${eur(r.ppHigh).slice(1)}</div></div>
+      <dl class="kv">
+        <dt>Housing + tax / person</dt><dd>${eur(r.housePP)}${r.quote?" ✓":""}</dd>
+        <dt>Travel return / person</dt><dd>${eur(r.travelPP)}</dd>
+        <dt>Avg. journey one way</dt><dd>${r.hours.toFixed(1)} h</dd>
+        <dt>Match score</dt><dd>${Math.round(x.score)}/100</dd>
+      </dl>
+      <div class="bar" aria-hidden="true"><i style="width:${Math.max(4,x.score)}%"></i></div>
+      <div class="chips">${d.tags.map(t=>`<span class="chip ${t[1]}">${t[0]}</span>`).join("")}</div>
+    </article>`;}).join("");
+
+  // travel matrix
+  const bestFor={}; ORIGINS.forEach(o=>{ let b=null; DESTS.forEach(d=>{ const t=d.travel[o.id], v=t.h*20+mid(t.cost); if(!b||v<b.v)b={id:d.id,v}; }); bestFor[o.id]=b.id; });
+  $("#travel").innerHTML=`<thead><tr><th scope="col">From</th>${DESTS.map(d=>`<th scope="col" style="--c:var(${d.c})"><span></span>${d.name}</th>`).join("")}</tr></thead><tbody>${
+    ORIGINS.map(o=>`<tr><th scope="row">${o.name}<small>${state.pax[o.id]||0} travellers${o.sub?"<br>"+o.sub:""}</small></th>${
+      DESTS.map(d=>{const t=d.travel[o.id];return `<td class="${bestFor[o.id]===d.id?"best":""}"><div class="line1"><span class="num">≈${t.h} h</span><span class="num">€${t.cost[0]}–${t.cost[1]}</span></div><div class="route">${t.route}</div><div class="links">${t.links.map(l=>`<a href="${link(l[1])}" target="_blank" rel="noopener">${l[0]}</a>`).join("")}</div></td>`;}).join("")
+    }</tr>`).join("")}</tbody>`;
+
+  // housing
+  $("#houses").innerHTML=DESTS.map(d=>{const hr=d.house[state.period], key=d.id+state.period;return `
+    <article class="house" style="--c:var(${d.c})">
+      <h3>${d.name}</h3>
+      <dl class="kv">
+        <dt>Estimate per night</dt><dd>€${hr[0]}–${hr[1]}</dd>
+        <dt>Estimate, ${p.nights} nights</dt><dd>${eur(hr[0]*p.nights)}–${eur(hr[1]*p.nights).slice(1)}</dd>
+        <dt>Tourist tax</dt><dd>≈€${d.house.tax} /person/night</dd>
+        <dt>Minimum stay</dt><dd style="font-family:var(--body)">${d.house.min}</dd>
+      </dl>
+      <label class="quote" for="q-${key}">Your best quote, total € <input type="number" min="0" step="10" id="q-${key}" data-q="${key}" value="${state.quote[key]||""}" placeholder="e.g. 3200"></label>
+      <ul>${d.house.tips.map(t=>`<li>${t}</li>`).join("")}</ul>
+      <div class="eyebrow">Search with 4+ bedrooms, your dates</div>
+      <div class="linkrow">${searchLinks(d).concat(d.house.local).map(l=>`<a href="${l[1]}" target="_blank" rel="noopener">${l[0]}</a>`).join("")}</div>
+    </article>`;}).join("");
+
+  $("#msg").value=`Hello,
+
+We are a group of ${totalPax()} adults looking for the whole property from ${fmt(p.in)} to ${fmt(p.out)} (${p.nights} nights).
+
+Could you confirm:
+1. The number of bedrooms and the beds in each room? We need 4 bedrooms with real beds (double or single), no sofa beds or extra mattresses.
+2. The total price for our dates, including cleaning fee and tourist tax.
+3. The minimum stay for these dates.
+4. How far the house is from the nearest bus stop or train station? We travel without a car.
+
+Thank you!`;
+}
+function fmt(s){ return new Date(s+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"}); }
+
+// static controls
+$("#pax").innerHTML=ORIGINS.map(o=>`<label for="pax-${o.id}">${o.name}<input type="number" min="0" max="20" id="pax-${o.id}" data-pax="${o.id}" value="${state.pax[o.id]}"></label>`).join("");
+$("#weights").innerHTML=WEIGHTS.map(w=>`<label for="w-${w.id}"><span>${w.label}</span><input type="range" min="0" max="5" id="w-${w.id}" data-w="${w.id}" value="${state.w[w.id]}"><span class="num" id="wv-${w.id}">${state.w[w.id]}</span></label>`).join("");
+
+document.addEventListener("click",e=>{ const b=e.target.closest("[data-p]"); if(b){state.period=b.dataset.p;save();render();} });
+document.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.dataset.pax){state.pax[t.dataset.pax]=Math.max(0,+t.value||0);}
+  else if(t.dataset.w){state.w[t.dataset.w]=+t.value;$("#wv-"+t.dataset.w).textContent=t.value;}
+  else if(t.dataset.q){state.quote[t.dataset.q]=+t.value||0; save(); renderKeepFocus(t.id); return;}
+  else return;
+  save(); render();
+});
+function renderKeepFocus(id){ const el=document.getElementById(id), pos=el.selectionStart; render(); const n=document.getElementById(id); if(n){n.focus(); try{n.setSelectionRange(pos,pos);}catch(e){}} }
+$("#copy").addEventListener("click",async()=>{
+  const b=$("#copy"), ta=$("#msg");
+  try{ await navigator.clipboard.writeText(ta.value); b.textContent="Copied"; }
+  catch(e){ ta.focus(); ta.select(); b.textContent="Selected: press Ctrl/Cmd+C"; }
+  setTimeout(()=>b.textContent="Copy message",2200);
+});
+render();
+</script>
+</body>
+</html>
