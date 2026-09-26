@@ -13,7 +13,7 @@
   --bg:#EBEFF3; --surface:#FFFFFF; --surface-2:#F4F6F9; --ink:#15202B; --muted:#5A6775; --line:#D3DAE2;
   --accent:#1F4E79; --accent-ink:#FFFFFF;
   /* trail-blaze colours, one per destination */
-  --t-red:#C8322B; --t-blue:#2366B8; --t-green:#1E8A4C; --t-yellow:#C99A06; --t-black:#3A4047; --t-orange:#D0661E; --t-purple:#6D4AA8;
+  --t-red:#C8322B; --t-blue:#2366B8; --t-green:#1E8A4C; --t-yellow:#C99A06; --t-black:#3A4047; --t-orange:#D0661E; --t-purple:#6D4AA8; --t-teal:#0E8585; --t-pink:#B83B75; --t-brown:#8A5A2B;
   --good:#1E8A4C; --warn:#B7791F; --bad:#C8322B;
   --display:"Archivo","Arial Narrow",system-ui,sans-serif;
   --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -24,7 +24,7 @@
     color-scheme: dark;
     --bg:#0E141A; --surface:#161F28; --surface-2:#1C2733; --ink:#E6ECF2; --muted:#94A3B3; --line:#2A3847;
     --accent:#7FB2E5; --accent-ink:#0E141A;
-    --t-red:#F0625A; --t-blue:#6AA4F0; --t-green:#4CC27E; --t-yellow:#E7C24A; --t-black:#C9D1DA; --t-orange:#F0954F; --t-purple:#A98BE0;
+    --t-red:#F0625A; --t-blue:#6AA4F0; --t-green:#4CC27E; --t-yellow:#E7C24A; --t-black:#C9D1DA; --t-orange:#F0954F; --t-purple:#A98BE0; --t-teal:#4FC7C2; --t-pink:#EE7FB0; --t-brown:#D2A06C;
     --good:#4CC27E; --warn:#E3A948; --bad:#F0625A;
   }
 }
@@ -32,7 +32,7 @@
   color-scheme: dark;
   --bg:#0E141A; --surface:#161F28; --surface-2:#1C2733; --ink:#E6ECF2; --muted:#94A3B3; --line:#2A3847;
   --accent:#7FB2E5; --accent-ink:#0E141A;
-  --t-red:#F0625A; --t-blue:#6AA4F0; --t-green:#4CC27E; --t-yellow:#E7C24A; --t-black:#C9D1DA; --t-orange:#F0954F; --t-purple:#A98BE0;
+  --t-red:#F0625A; --t-blue:#6AA4F0; --t-green:#4CC27E; --t-yellow:#E7C24A; --t-black:#C9D1DA; --t-orange:#F0954F; --t-purple:#A98BE0; --t-teal:#4FC7C2; --t-pink:#EE7FB0; --t-brown:#D2A06C;
   --good:#4CC27E; --warn:#E3A948; --bad:#F0625A;
 }
 *{box-sizing:border-box}
@@ -136,11 +136,11 @@ footer ul{margin:0;padding-left:18px;columns:2 320px}
 
 <header class="top">
   <div class="blazes" aria-hidden="true">
-    <span class="blaze" style="--c:var(--t-red)"></span><span class="blaze" style="--c:var(--t-blue)"></span><span class="blaze" style="--c:var(--t-green)"></span><span class="blaze" style="--c:var(--t-yellow)"></span><span class="blaze" style="--c:var(--t-orange)"></span><span class="blaze" style="--c:var(--t-purple)"></span><span class="blaze" style="--c:var(--t-black)"></span>
+    <span class="blaze" style="--c:var(--t-red)"></span><span class="blaze" style="--c:var(--t-blue)"></span><span class="blaze" style="--c:var(--t-green)"></span><span class="blaze" style="--c:var(--t-yellow)"></span><span class="blaze" style="--c:var(--t-orange)"></span><span class="blaze" style="--c:var(--t-purple)"></span><span class="blaze" style="--c:var(--t-black)"></span><span class="blaze" style="--c:var(--t-teal)"></span><span class="blaze" style="--c:var(--t-pink)"></span><span class="blaze" style="--c:var(--t-brown)"></span>
   </div>
   <p class="eyebrow">New Year 2026/27 · car-free mountain trip</p>
   <h1>Winter Summit Planner</h1>
-  <p class="lede">Seven mountain bases reachable without a car, compared for a group travelling from Paris, Strasbourg, Berlin and Chișinău. The last three (Oberstdorf, Krkonoše, Bad Gastein) sit between the four cities and cut the average journey by 2–4 hours. Choose the dates, say how many people come from each city, and weight what matters. Each destination carries a trail-blaze colour, as on Tatra and Carpathian hiking signs.</p>
+  <p class="lede">Ten mountain bases reachable without a car, compared for a group travelling from Paris, Strasbourg, Berlin and Chișinău. Oberstdorf, Krkonoše and Bad Gastein sit between the four cities and cut the average journey by 2–4 hours; Auron, Chamonix and Les Arcs are the French Alps options. Choose the dates, say how many people come from each city, and weight what matters. Each destination carries a trail-blaze colour, as on Tatra and Carpathian hiking signs.</p>
 </header>
 
 <div class="controls" role="group" aria-label="Trip settings">
@@ -204,7 +204,7 @@ footer ul{margin:0;padding-left:18px;columns:2 320px}
 
 <section class="two" aria-label="Notes">
   <div class="panel">
-    <h3>Why these seven</h3>
+    <h3>Why these ten</h3>
     <ul>
       <li><strong>Zakopane (PL)</strong>: the classic Tatra New Year, with the biggest party and the biggest crowds. Easiest from Paris and Berlin via Kraków.</li>
       <li><strong>High Tatras (SK)</strong>: the same mountains on the quieter Slovak side. The TEŽ electric railway links Poprad, Starý Smokovec, Tatranská Lomnica and Štrbské Pleso, so a car is never needed.</li>
@@ -213,6 +213,9 @@ footer ul{margin:0;padding-left:18px;columns:2 320px}
       <li><strong>Oberstdorf (DE)</strong>: shortest average journey. Train all the way from Paris, Strasbourg and Berlin, and Wizz Air flies Chișinău → Memmingen, 1h20 away by train.</li>
       <li><strong>Krkonoše (CZ)</strong>: Prague is reachable directly from every city (Berlin by train in 4h30), and cottage prices are close to Slovak levels. The mountains are lower, so snow is less certain.</li>
       <li><strong>Bad Gastein (AT)</strong>: one direct train from Munich for Paris, Strasbourg and Berlin; Chișinău flies to Vienna. Big ski area and thermal spas, at Alpine prices.</li>
+      <li><strong>Auron / Isola 2000 (FR)</strong>: all four cities fly direct to Nice, and a €1.50 bus reaches the slopes in about 2h. Shortest average journey of all. Southern snow can vary.</li>
+      <li><strong>Chamonix (FR)</strong>: Geneva is a train from Strasbourg and a direct flight from Paris and Berlin. The most famous mountain, and the priciest housing.</li>
+      <li><strong>Les Arcs (FR)</strong>: best for Paris (direct TGV and a funicular to the slopes), but long for Berlin and Chișinău.</li>
       <li><strong>Piešťany</strong> was suggested, but it is a spa town in the lowlands of western Slovakia at about 160 m, without real mountains. The High Tatras are the Slovak mountain choice.</li>
     </ul>
   </div>
@@ -221,6 +224,7 @@ footer ul{margin:0;padding-left:18px;columns:2 320px}
     <ul>
       <li>30 Dec 2026 is a Wednesday, 1 Jan 2027 a Friday, 2 Jan a Saturday, 6 Jan a Wednesday.</li>
       <li>For 1–6 Jan: Austrian and some German hosts rent Saturday to Saturday, so a Friday arrival may need a request. In Romania, New Year packages often run to 2 Jan, so a 1 Jan arrival can overlap them.</li>
+      <li>French school holidays run 19 Dec 2026 – 4 Jan 2027. French resorts rent Saturday to Saturday: 26 Dec–2 Jan is peak, 2–9 Jan is one of the cheapest weeks of the winter.</li>
       <li>6 January (Epiphany) is a public holiday in Poland, Slovakia and Italy: slopes and trains are busy until the evening of the 6th.</li>
       <li>1–2 January are public holidays in Romania; Chișinău travellers celebrating Orthodox Christmas on 7 January may prefer the later dates.</li>
       <li>Both date options share 2–5 January. If the group splits, a place booked 30 Dec–6 Jan (7 nights) covers everyone and meets most minimum stays.</li>
@@ -341,6 +345,39 @@ const DESTS = [
      SXB:{h:7, cost:[110,230], route:"Direct TGV Strasbourg → Munich (~3h45), then direct EC Munich → Bad Gastein (~3h). Train all the way.", links:[["DB tickets","https://int.bahn.de/en"],["ÖBB","https://www.oebb.at/en/"]]},
      BER:{h:7.5, cost:[120,250], route:"ICE Berlin → Munich (~4h), then direct EC to Bad Gastein (~3h).", links:[["DB tickets","https://int.bahn.de/en"]]},
      KIV:{h:8, cost:[180,360], route:"Austrian Airlines Chișinău → Vienna (~1h40, twice daily), then train Vienna → Bad Gastein (~4h, 1 change).", links:[["Flights","gf:RMO:VIE"],["ÖBB","https://www.oebb.at/en/"]]}
+   }},
+  {id:"aur", name:"Auron / Isola 2000", short:true, fr:true, country:"France · Alpes-Maritimes · 1,600 m, lifts to 2,450 m", c:"--t-teal", air:"NCE", q:"Auron, France",
+   scores:{snow:3, carfree:4, ski:4, quiet:3},
+   tags:[["Direct flights to Nice from all 4 cities","good"],["€1.50 bus from the airport","good"],["Only 2 buses a day","warn"]],
+   house:{A:[500,1000],C:[350,700],B:[250,550], tax:2, min:"Saturday to Saturday is the norm; 2 Jan is a Saturday", local:[["Auron resort","https://www.auron.com/"],["Isola 2000 resort","https://isola2000.com/en/"]],
+     tips:["Auron is an old village with real chalets; Isola 2000 (2,000 m, better snow) is mostly apartment blocks.","French ski flats often sleep people in a ‘coin montagne’ bunk alcove or on a ‘canapé convertible’: check the room-by-room bed list.","French school holidays end on 4 Jan, so the week of 2–9 Jan is one of the cheapest of the season."]},
+   travel:{
+     PAR:{h:5.5, cost:[150,320], route:"Fly Orly/CDG → Nice (~1h25, many flights a day), then Lignes d'Azur bus from the airport to Auron or Isola 2000 (~2h05, €1.50; winter ski buses need booking the day before). Buses run only morning and late afternoon, so match your flight. All-train: TGV Paris → Nice ~6h.", links:[["Flights","gf:ORY:NCE"],["Lignes d'Azur ski buses","https://www.lignesdazur.com/"]]},
+     SXB:{h:5.5, cost:[150,320], route:"Direct Volotea or easyJet Strasbourg → Nice (~1h20, about 8 flights a week), then the airport bus.", links:[["Flights","gf:SXB:NCE"],["Lignes d'Azur ski buses","https://www.lignesdazur.com/"]]},
+     BER:{h:6, cost:[140,300], route:"easyJet or Eurowings Berlin → Nice (~2h, daily), then the airport bus.", links:[["Flights","gf:BER:NCE"],["Lignes d'Azur ski buses","https://www.lignesdazur.com/"]]},
+     KIV:{h:6.5, cost:[150,330], route:"Wizz Air Chișinău → Nice (direct), then the airport bus.", links:[["Flights","gf:RMO:NCE"],["Lignes d'Azur ski buses","https://www.lignesdazur.com/"]]}
+   }},
+  {id:"cha", name:"Chamonix", short:true, fr:true, country:"France · Mont Blanc · 1,035 m, lifts to 3,842 m", c:"--t-pink", air:"GVA", q:"Chamonix-Mont-Blanc, France",
+   scores:{snow:4, carfree:5, ski:5, quiet:2},
+   tags:[["Train or 1h15 bus from Geneva","good"],["Mid-week arrivals easier","good"],["Expensive, busy","bad"]],
+   house:{A:[900,1800],C:[650,1300],B:[500,1000], tax:3, min:"5–7 nights over New Year; as a year-round town, mid-week arrivals are easier than in purpose-built resorts", local:[["Chamonix tourism","https://www.chamonix.com/"]],
+     tips:["Ask for the ‘carte d'hôte’: free valley buses and the Chamonix–Vallorcine train.","Skiing: Brévent-Flégère, Grands Montets, Balme; Les Houches in bad weather.","Chalets for 8–10 are common but go fast for New Year."]},
+   travel:{
+     PAR:{h:6, cost:[130,300], route:"TGV Paris → Annecy or Bellegarde, then regional train to Saint-Gervais-Le Fayet and the Mont-Blanc Express to Chamonix (~6h). Or fly to Geneva (~1h10) and take the bus (~1h15).", links:[["SNCF Connect","https://www.sncf-connect.com/en-en/"],["Flights","gf:CDG:GVA"]]},
+     SXB:{h:6.5, cost:[120,280], route:"Train Strasbourg → Basel → Geneva (~4h), then bus from Geneva to Chamonix (~1h15–1h30). Train and bus all the way.", links:[["SBB","https://www.sbb.ch/en"],["Chamonix transfers","https://en.chamonix.com/taxis-shuttles-and-vtc"]]},
+     BER:{h:5.5, cost:[140,320], route:"easyJet Berlin → Geneva (~1h35), then the airport bus to Chamonix (~1h15).", links:[["Flights","gf:BER:GVA"],["Chamonix transfers","https://en.chamonix.com/taxis-shuttles-and-vtc"]]},
+     KIV:{h:8, cost:[180,380], route:"Direct Chișinău → Geneva flights (FlyOne, Wizz) run on some schedules: check your dates. Otherwise connect via Vienna or Munich to Geneva, or Wizz to Paris Beauvais and TGV.", links:[["Flights","gf:RMO:GVA"]]}
+   }},
+  {id:"arc", name:"Les Arcs", short:false, fr:true, country:"France · Tarentaise · 1,600–2,000 m, lifts to 3,226 m", c:"--t-brown", air:"GVA", q:"Les Arcs, Bourg-Saint-Maurice, France",
+   scores:{snow:5, carfree:5, ski:5, quiet:3},
+   tags:[["Funicular from the station","good"],["Huge ski area (Paradiski)","good"],["Far for Berlin and Chișinău","warn"]],
+   house:{A:[800,1600],C:[550,1100],B:[400,850], tax:2.5, min:"Saturday to Saturday almost everywhere; 2 Jan is a Saturday", local:[["Les Arcs by train","https://www.lesarcs.com/en/funicular"]],
+     tips:["The funicular from Bourg-Saint-Maurice station to Arc 1600 takes 7 minutes and is free with a train ticket.","Big flats in Arc 1600/1800 often count bunk alcoves and sofa beds: look at chalets in Peisey-Vallandry or Villaroger, or insist on the bed list.","From 2 Jan (Saturday) French school holidays are over and prices drop sharply."]},
+   travel:{
+     PAR:{h:5.5, cost:[120,280], route:"TGV Paris → Bourg-Saint-Maurice (~5h; direct on winter weekends, otherwise change in Chambéry), then the funicular to Arc 1600.", links:[["SNCF Connect","https://www.sncf-connect.com/en-en/"],["Getting there by train","https://www.lesarcs.com/en/funicular"]]},
+     SXB:{h:7.5, cost:[130,280], route:"TGV Strasbourg → Lyon (~3h40), then train to Bourg-Saint-Maurice via Chambéry (~3h), and the funicular.", links:[["SNCF Connect","https://www.sncf-connect.com/en-en/"]]},
+     BER:{h:8, cost:[160,340], route:"Fly Berlin → Geneva (~1h35), then train via Annecy or Aix-les-Bains, or a winter transfer bus, to Bourg-Saint-Maurice (~3h).", links:[["Flights","gf:BER:GVA"],["SNCF Connect","https://www.sncf-connect.com/en-en/"]]},
+     KIV:{h:10, cost:[180,380], route:"Wizz Air Chișinău → Paris Beauvais (direct, 9 a week), coach to Paris, then TGV to Bourg-Saint-Maurice. Via Geneva if direct flights run on your dates.", links:[["Flights","gf:RMO:BVA"],["SNCF Connect","https://www.sncf-connect.com/en-en/"]]}
    }}
 ];
 const WEIGHTS = [
