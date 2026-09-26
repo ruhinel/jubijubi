@@ -13,7 +13,7 @@
   --bg:#EBEFF3; --surface:#FFFFFF; --surface-2:#F4F6F9; --ink:#15202B; --muted:#5A6775; --line:#D3DAE2;
   --accent:#1F4E79; --accent-ink:#FFFFFF;
   /* trail-blaze colours, one per destination */
-  --t-red:#C8322B; --t-blue:#2366B8; --t-green:#1E8A4C; --t-yellow:#C99A06;
+  --t-red:#C8322B; --t-blue:#2366B8; --t-green:#1E8A4C; --t-yellow:#C99A06; --t-black:#3A4047; --t-orange:#D0661E; --t-purple:#6D4AA8;
   --good:#1E8A4C; --warn:#B7791F; --bad:#C8322B;
   --display:"Archivo","Arial Narrow",system-ui,sans-serif;
   --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -24,7 +24,7 @@
     color-scheme: dark;
     --bg:#0E141A; --surface:#161F28; --surface-2:#1C2733; --ink:#E6ECF2; --muted:#94A3B3; --line:#2A3847;
     --accent:#7FB2E5; --accent-ink:#0E141A;
-    --t-red:#F0625A; --t-blue:#6AA4F0; --t-green:#4CC27E; --t-yellow:#E7C24A;
+    --t-red:#F0625A; --t-blue:#6AA4F0; --t-green:#4CC27E; --t-yellow:#E7C24A; --t-black:#C9D1DA; --t-orange:#F0954F; --t-purple:#A98BE0;
     --good:#4CC27E; --warn:#E3A948; --bad:#F0625A;
   }
 }
@@ -32,7 +32,7 @@
   color-scheme: dark;
   --bg:#0E141A; --surface:#161F28; --surface-2:#1C2733; --ink:#E6ECF2; --muted:#94A3B3; --line:#2A3847;
   --accent:#7FB2E5; --accent-ink:#0E141A;
-  --t-red:#F0625A; --t-blue:#6AA4F0; --t-green:#4CC27E; --t-yellow:#E7C24A;
+  --t-red:#F0625A; --t-blue:#6AA4F0; --t-green:#4CC27E; --t-yellow:#E7C24A; --t-black:#C9D1DA; --t-orange:#F0954F; --t-purple:#A98BE0;
   --good:#4CC27E; --warn:#E3A948; --bad:#F0625A;
 }
 *{box-sizing:border-box}
@@ -61,6 +61,9 @@ header.top .lede{max-width:68ch;color:var(--muted)}
 .seg{display:flex;flex-wrap:wrap;gap:6px}
 .seg button{font:600 14px var(--body);border:1px solid var(--line);background:var(--surface-2);color:var(--ink);padding:9px 12px;border-radius:6px;cursor:pointer;text-align:left}
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.seg button .dot{display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--c);margin-right:6px}
+#destpick button[aria-pressed="false"]{opacity:.6;text-decoration:line-through}
+#destpick button[aria-pressed="true"]{background:var(--surface);color:var(--ink);border-color:var(--c);box-shadow:inset 0 -3px 0 var(--c)}
 .seg button small{display:block;font-weight:400;opacity:.8}
 .pax{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .pax label{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-weight:500}
@@ -93,7 +96,8 @@ section{display:grid;gap:14px}
 
 /* travel matrix */
 .tablebox{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px}
-table{border-collapse:collapse;width:100%;min-width:880px}
+table{border-collapse:collapse;width:100%}
+td{min-width:200px}
 th,td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
 thead th{font:700 15px var(--display);font-stretch:85%;background:var(--surface-2)}
 thead th span{display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--c);margin-right:6px}
@@ -132,11 +136,11 @@ footer ul{margin:0;padding-left:18px;columns:2 320px}
 
 <header class="top">
   <div class="blazes" aria-hidden="true">
-    <span class="blaze" style="--c:var(--t-red)"></span><span class="blaze" style="--c:var(--t-blue)"></span><span class="blaze" style="--c:var(--t-green)"></span><span class="blaze" style="--c:var(--t-yellow)"></span>
+    <span class="blaze" style="--c:var(--t-red)"></span><span class="blaze" style="--c:var(--t-blue)"></span><span class="blaze" style="--c:var(--t-green)"></span><span class="blaze" style="--c:var(--t-yellow)"></span><span class="blaze" style="--c:var(--t-orange)"></span><span class="blaze" style="--c:var(--t-purple)"></span><span class="blaze" style="--c:var(--t-black)"></span>
   </div>
   <p class="eyebrow">New Year 2026/27 · car-free mountain trip</p>
   <h1>Winter Summit Planner</h1>
-  <p class="lede">Four mountain bases reachable without a car, compared for a group travelling from Paris, Strasbourg, Berlin and Chișinău. Choose the dates, say how many people come from each city, and weight what matters. Each destination carries a trail-blaze colour, as on Tatra and Carpathian hiking signs.</p>
+  <p class="lede">Seven mountain bases reachable without a car, compared for a group travelling from Paris, Strasbourg, Berlin and Chișinău. The last three (Oberstdorf, Krkonoše, Bad Gastein) sit between the four cities and cut the average journey by 2–4 hours. Choose the dates, say how many people come from each city, and weight what matters. Each destination carries a trail-blaze colour, as on Tatra and Carpathian hiking signs.</p>
 </header>
 
 <div class="controls" role="group" aria-label="Trip settings">
@@ -161,6 +165,7 @@ footer ul{margin:0;padding-left:18px;columns:2 320px}
     <h2 id="h-rank">Ranking</h2>
     <p class="muted">Cost is the midpoint of estimated travel + housing + tourist tax, per person. Enter a real quote under Housing and it replaces the estimate.</p>
   </div>
+  <div class="seg" id="destpick" role="group" aria-label="Destinations to compare"></div>
   <div class="rank" id="rank"></div>
 </section>
 
@@ -199,12 +204,15 @@ footer ul{margin:0;padding-left:18px;columns:2 320px}
 
 <section class="two" aria-label="Notes">
   <div class="panel">
-    <h3>Why these four</h3>
+    <h3>Why these seven</h3>
     <ul>
       <li><strong>Zakopane (PL)</strong>: the classic Tatra New Year, with the biggest party and the biggest crowds. Easiest from Paris and Berlin via Kraków.</li>
       <li><strong>High Tatras (SK)</strong>: the same mountains on the quieter Slovak side. The TEŽ electric railway links Poprad, Starý Smokovec, Tatranská Lomnica and Štrbské Pleso, so a car is never needed.</li>
       <li><strong>Sinaia / Bușteni (RO)</strong>: Bucegi mountains on the Bucharest–Brașov main line. By far the easiest and cheapest for Chișinău, with a sleeper train straight to Bucharest.</li>
       <li><strong>San Candido / Innichen (IT)</strong>, Alta Pusteria, Dolomites: a town with its own railway station, a ski slope at the edge of town, a gondola with its own train stop at Versciaco, and the Tre Cime area next door. The Dolomites benchmark, and the most expensive option.</li>
+      <li><strong>Oberstdorf (DE)</strong>: shortest average journey. Train all the way from Paris, Strasbourg and Berlin, and Wizz Air flies Chișinău → Memmingen, 1h20 away by train.</li>
+      <li><strong>Krkonoše (CZ)</strong>: Prague is reachable directly from every city (Berlin by train in 4h30), and cottage prices are close to Slovak levels. The mountains are lower, so snow is less certain.</li>
+      <li><strong>Bad Gastein (AT)</strong>: one direct train from Munich for Paris, Strasbourg and Berlin; Chișinău flies to Vienna. Big ski area and thermal spas, at Alpine prices.</li>
       <li><strong>Piešťany</strong> was suggested, but it is a spa town in the lowlands of western Slovakia at about 160 m, without real mountains. The High Tatras are the Slovak mountain choice.</li>
     </ul>
   </div>
@@ -297,6 +305,39 @@ const DESTS = [
      SXB:{h:10, cost:[130,260], route:"Train only: TGV/ICE Strasbourg → Munich (~4h), then Munich → Innsbruck → Fortezza/Franzensfeste → San Candido/Innichen (~5–6h, 2 changes). No airport at all.", links:[["DB tickets","https://int.bahn.de/en"],["ÖBB","https://www.oebb.at/en/"]]},
      BER:{h:10.5, cost:[130,280], route:"ICE Berlin → Munich (~4h), then train to San Candido (~5–6h). Or fly Berlin → Venice and take the Cortina Express and bus 445.", links:[["DB tickets","https://int.bahn.de/en"],["Flights","gf:BER:VCE"]]},
      KIV:{h:9, cost:[160,340], route:"Wizz Air Chișinău → Venice (direct), then Cortina Express and bus 445. Alternative: Wizz to Bergamo and train via Verona, Bolzano and Fortezza (~5h).", links:[["Flights","gf:RMO:VCE"],["Cortina Express","https://www.cortinaexpress.it/en/"]]}
+   }},
+  {id:"obe", name:"Oberstdorf", short:true, country:"Germany · Allgäu Alps · 815 m, lifts to 2,224 m", c:"--t-orange", air:"FMM", q:"Oberstdorf, Germany",
+   scores:{snow:3, carfree:5, ski:3, quiet:3},
+   tags:[["Shortest average journey","good"],["Train all the way from France","good"],["Chișinău flight 3×/week","warn"]],
+   house:{A:[400,800],B:[300,600], tax:3.5, min:"3–7 nights; houses with 4 bedrooms are fewer than apartments", local:[["Oberstdorf tourism","https://www.oberstdorf.de/"]],
+     tips:["The Four Hills ski-jumping tournament opens in Oberstdorf around 28–29 Dec: book early for the first dates.","Skiing: Fellhorn/Kanzelwand (crosses into Kleinwalsertal, Austria), Nebelhorn, Söllereck. Ski buses are free with the guest card.","German ‘Ferienhaus’ listings state the beds per room: look for ‘Doppelbett’ or ‘Einzelbetten’, avoid ‘Schlafcouch’."]},
+   travel:{
+     PAR:{h:7.5, cost:[120,260], route:"Direct TGV Paris Est → Ulm (~4h40, Paris–Munich line), then regional train via Kempten to Oberstdorf (~2h). Train all the way, no airport.", links:[["DB tickets","https://int.bahn.de/en"],["SNCF Connect","https://www.sncf-connect.com/en-en/"]]},
+     SXB:{h:5, cost:[80,180], route:"TGV/ICE Strasbourg → Ulm (~2h30, direct TGV or via Stuttgart), then Ulm → Oberstdorf (~2h).", links:[["DB tickets","https://int.bahn.de/en"]]},
+     BER:{h:7, cost:[100,220], route:"ICE Berlin → Augsburg or Munich (~4h–4h30), then regional train to Oberstdorf via Kempten (~2h–2h30).", links:[["DB tickets","https://int.bahn.de/en"]]},
+     KIV:{h:6, cost:[100,260], route:"Wizz Air Chișinău → Memmingen (~2h30, about 3 flights a week: check your dates are flight days), then hourly train from Memmingen (~1h20) or FlixBus from the airport (~1h40). Backup: Austrian via Vienna or Munich.", links:[["Flights","gf:RMO:FMM"],["DB tickets","https://int.bahn.de/en"]]}
+   }},
+  {id:"krk", name:"Krkonoše", short:true, country:"Czechia · Špindlerův Mlýn · 715 m, lifts to 1,310 m", c:"--t-purple", air:"PRG", q:"Špindlerův Mlýn, Czechia",
+   scores:{snow:3, carfree:4, ski:3, quiet:3},
+   tags:[["Prague: direct from every city","good"],["Low prices","good"],["Lower mountains","warn"]],
+   house:{A:[300,600],B:[180,380], tax:1, min:"New Year stays of 5–7 nights are common for whole ‘chalupy’", local:[["e-chalupy.cz Krkonoše","https://www.e-chalupy.cz/krkonose"],["Hauzi.cz","https://www.hauzi.cz/"]],
+     tips:["Whole cottages (‘chalupa’, ‘chata’) with 4–6 bedrooms are the standard group rental here, often with sauna.","Skiing: SkiArena Špindlerův Mlýn (Svatý Petr, Medvědín, Horní Mísečky). Pec pod Sněžkou and Harrachov are alternatives.","Czech for sofa bed: ‘rozkládací gauč’ or ‘pohovka’. Ask for ‘manželská postel’ (double) or ‘samostatná lůžka’ (singles)."]},
+   travel:{
+     PAR:{h:6.5, cost:[150,320], route:"Fly CDG/ORY/Beauvais → Prague (~1h45), bus to Černý Most, then direct bus to Špindlerův Mlýn (~2h30).", links:[["Flights","gf:CDG:PRG"],["Buses (IDOS)","https://idos.cz/en/"]]},
+     SXB:{h:8, cost:[160,340], route:"Fly Frankfurt or Basel-Mulhouse → Prague (~1h15), then direct bus (~2h30).", links:[["Flights FRA","gf:FRA:PRG"],["Flights BSL","gf:BSL:PRG"]]},
+     BER:{h:7, cost:[60,140], route:"EuroCity Berlin → Praha hl.n. (~4h30), metro to Černý Most, then bus to Špindlerův Mlýn (~2h30).", links:[["DB tickets","https://int.bahn.de/en"],["Buses (IDOS)","https://idos.cz/en/"]]},
+     KIV:{h:6.5, cost:[150,320], route:"Wizz Air or FlyOne Chișinău → Prague (~2h15, several flights a week), then direct bus (~2h30).", links:[["Flights","gf:RMO:PRG"],["Buses (IDOS)","https://idos.cz/en/"]]}
+   }},
+  {id:"gas", name:"Bad Gastein", short:true, country:"Austria · Gastein valley · 1,000 m, lifts to 2,686 m", c:"--t-black", air:"MUC", q:"Bad Gastein, Austria",
+   scores:{snow:4, carfree:5, ski:5, quiet:3},
+   tags:[["Direct EC from Munich","good"],["Big ski area, good snow","good"],["Sat–Sat stays common","warn"]],
+   house:{A:[550,1100],B:[400,850], tax:2.5, min:"7 nights, often Saturday to Saturday, over New Year", local:[["Gastein tourism","https://www.gastein.com/en/"]],
+     tips:["The Stubnerkogel gondola is a short walk from the station; Schlossalm is one train stop away in Bad Hofgastein.","Belle Époque town with thermal spas (Felsentherme): good for non-skiers.","Austrian holiday houses often rent Saturday to Saturday: 2–6 Jan fits poorly, 30 Dec–6 Jan may need a 2 Jan start."]},
+   travel:{
+     PAR:{h:8, cost:[160,340], route:"Fly CDG → Munich (~1h35), then train to Bad Gastein (~3h from Munich Hbf, 4 direct EuroCity trains a day). All-train: TGV to Munich (~5h40) + EC (~3h).", links:[["Flights","gf:CDG:MUC"],["ÖBB","https://www.oebb.at/en/"]]},
+     SXB:{h:7, cost:[110,230], route:"Direct TGV Strasbourg → Munich (~3h45), then direct EC Munich → Bad Gastein (~3h). Train all the way.", links:[["DB tickets","https://int.bahn.de/en"],["ÖBB","https://www.oebb.at/en/"]]},
+     BER:{h:7.5, cost:[120,250], route:"ICE Berlin → Munich (~4h), then direct EC to Bad Gastein (~3h).", links:[["DB tickets","https://int.bahn.de/en"]]},
+     KIV:{h:8, cost:[180,360], route:"Austrian Airlines Chișinău → Vienna (~1h40, twice daily), then train Vienna → Bad Gastein (~4h, 1 change).", links:[["Flights","gf:RMO:VIE"],["ÖBB","https://www.oebb.at/en/"]]}
    }}
 ];
 const WEIGHTS = [
@@ -308,15 +349,16 @@ const WEIGHTS = [
   {id:"quiet", label:"Calm, few crowds", def:1}
 ];
 
-const state = {period:"A", pax:{PAR:2,SXB:2,BER:2,KIV:2}, w:{}, quote:{}};
+const state = {period:"A", pax:{PAR:2,SXB:2,BER:2,KIV:2}, w:{}, quote:{}, off:{}};
 WEIGHTS.forEach(w=>state.w[w.id]=w.def);
-try{ const s=JSON.parse(localStorage.getItem("wsp-state")||"null"); if(s){Object.assign(state.pax,s.pax||{});Object.assign(state.w,s.w||{});state.quote=s.quote||{};if(PERIODS[s.period])state.period=s.period;} }catch(e){}
+try{ const s=JSON.parse(localStorage.getItem("wsp-state")||"null"); if(s){Object.assign(state.pax,s.pax||{});Object.assign(state.w,s.w||{});state.quote=s.quote||{};state.off=s.off||{};if(PERIODS[s.period])state.period=s.period;} }catch(e){}
 function save(){ try{localStorage.setItem("wsp-state",JSON.stringify(state));}catch(e){} }
 
 const $=s=>document.querySelector(s);
 const eur=n=>"€"+Math.round(n).toLocaleString("en-GB");
 const mid=a=>(a[0]+a[1])/2;
 const P=()=>PERIODS[state.period];
+const active=()=>{const a=DESTS.filter(d=>!state.off[d.id]);return a.length?a:DESTS;};
 const totalPax=()=>Object.values(state.pax).reduce((a,b)=>a+(+b||0),0);
 
 function gf(from,to){ const p=P(); return "https://www.google.com/travel/flights?q="+encodeURIComponent(`Flights from ${from} to ${to} on ${p.in} through ${p.out}`); }
@@ -349,7 +391,8 @@ function render(){
   $("#period").innerHTML=Object.entries(PERIODS).map(([k,v])=>`<button type="button" data-p="${k}" aria-pressed="${k===state.period}">${v.label}<small>${v.sub}</small></button>`).join("");
   $("#periodNote").textContent=p.note;
 
-  const res=DESTS.map(d=>({d,r:calc(d)}));
+  $("#destpick").innerHTML=DESTS.map(d=>`<button type="button" data-d="${d.id}" style="--c:var(${d.c})" aria-pressed="${!state.off[d.id]}"><span class="dot"></span>${d.name}${d.short?' <small>shorter trip</small>':''}</button>`).join("");
+  const res=active().map(d=>({d,r:calc(d)}));
   const costs=res.map(x=>(x.r.ppLow+x.r.ppHigh)/2), hrs=res.map(x=>x.r.hours);
   const norm=(v,arr,inv)=>{const mn=Math.min(...arr),mx=Math.max(...arr); if(mx===mn)return 1; const t=(v-mn)/(mx-mn); return inv?1-t:t;};
   const wsum=Object.values(state.w).reduce((a,b)=>a+b,0)||1;
@@ -376,14 +419,14 @@ function render(){
     </article>`;}).join("");
 
   // travel matrix
-  const bestFor={}; ORIGINS.forEach(o=>{ let b=null; DESTS.forEach(d=>{ const t=d.travel[o.id], v=t.h*20+mid(t.cost); if(!b||v<b.v)b={id:d.id,v}; }); bestFor[o.id]=b.id; });
-  $("#travel").innerHTML=`<thead><tr><th scope="col">From</th>${DESTS.map(d=>`<th scope="col" style="--c:var(${d.c})"><span></span>${d.name}</th>`).join("")}</tr></thead><tbody>${
+  const bestFor={}; ORIGINS.forEach(o=>{ let b=null; active().forEach(d=>{ const t=d.travel[o.id], v=t.h*20+mid(t.cost); if(!b||v<b.v)b={id:d.id,v}; }); bestFor[o.id]=b.id; });
+  $("#travel").innerHTML=`<thead><tr><th scope="col">From</th>${active().map(d=>`<th scope="col" style="--c:var(${d.c})"><span></span>${d.name}</th>`).join("")}</tr></thead><tbody>${
     ORIGINS.map(o=>`<tr><th scope="row">${o.name}<small>${state.pax[o.id]||0} travellers${o.sub?"<br>"+o.sub:""}</small></th>${
-      DESTS.map(d=>{const t=d.travel[o.id];return `<td class="${bestFor[o.id]===d.id?"best":""}"><div class="line1"><span class="num">≈${t.h} h</span><span class="num">€${t.cost[0]}–${t.cost[1]}</span></div><div class="route">${t.route}</div><div class="links">${t.links.map(l=>`<a href="${link(l[1])}" target="_blank" rel="noopener">${l[0]}</a>`).join("")}</div></td>`;}).join("")
+      active().map(d=>{const t=d.travel[o.id];return `<td class="${bestFor[o.id]===d.id?"best":""}"><div class="line1"><span class="num">≈${t.h} h</span><span class="num">€${t.cost[0]}–${t.cost[1]}</span></div><div class="route">${t.route}</div><div class="links">${t.links.map(l=>`<a href="${link(l[1])}" target="_blank" rel="noopener">${l[0]}</a>`).join("")}</div></td>`;}).join("")
     }</tr>`).join("")}</tbody>`;
 
   // housing
-  $("#houses").innerHTML=DESTS.map(d=>{const hr=d.house[state.period], key=d.id+state.period;return `
+  $("#houses").innerHTML=active().map(d=>{const hr=d.house[state.period], key=d.id+state.period;return `
     <article class="house" style="--c:var(${d.c})">
       <h3>${d.name}</h3>
       <dl class="kv">
@@ -416,7 +459,8 @@ function fmt(s){ return new Date(s+"T12:00:00").toLocaleDateString("en-GB",{day:
 $("#pax").innerHTML=ORIGINS.map(o=>`<label for="pax-${o.id}">${o.name}<input type="number" min="0" max="20" id="pax-${o.id}" data-pax="${o.id}" value="${state.pax[o.id]}"></label>`).join("");
 $("#weights").innerHTML=WEIGHTS.map(w=>`<label for="w-${w.id}"><span>${w.label}</span><input type="range" min="0" max="5" id="w-${w.id}" data-w="${w.id}" value="${state.w[w.id]}"><span class="num" id="wv-${w.id}">${state.w[w.id]}</span></label>`).join("");
 
-document.addEventListener("click",e=>{ const b=e.target.closest("[data-p]"); if(b){state.period=b.dataset.p;save();render();} });
+document.addEventListener("click",e=>{ const b=e.target.closest("[data-p]"); if(b){state.period=b.dataset.p;save();render();}
+  const d=e.target.closest("[data-d]"); if(d){state.off[d.dataset.d]=!state.off[d.dataset.d];save();render();} });
 document.addEventListener("input",e=>{
   const t=e.target;
   if(t.dataset.pax){state.pax[t.dataset.pax]=Math.max(0,+t.value||0);}
