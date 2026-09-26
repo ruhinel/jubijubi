@@ -219,7 +219,8 @@ footer ul{margin:0;padding-left:18px;columns:2 320px}
   <div class="panel">
     <h3>Calendar notes</h3>
     <ul>
-      <li>30 Dec 2026 is a Wednesday, 2 Jan 2027 a Saturday, 6 Jan 2027 a Wednesday.</li>
+      <li>30 Dec 2026 is a Wednesday, 1 Jan 2027 a Friday, 2 Jan a Saturday, 6 Jan a Wednesday.</li>
+      <li>For 1–6 Jan: Austrian and some German hosts rent Saturday to Saturday, so a Friday arrival may need a request. In Romania, New Year packages often run to 2 Jan, so a 1 Jan arrival can overlap them.</li>
       <li>6 January (Epiphany) is a public holiday in Poland, Slovakia and Italy: slopes and trains are busy until the evening of the 6th.</li>
       <li>1–2 January are public holidays in Romania; Chișinău travellers celebrating Orthodox Christmas on 7 January may prefer the later dates.</li>
       <li>Both date options share 2–5 January. If the group splits, a place booked 30 Dec–6 Jan (7 nights) covers everyone and meets most minimum stays.</li>
@@ -252,6 +253,8 @@ footer ul{margin:0;padding-left:18px;columns:2 320px}
 const PERIODS = {
   A:{label:"30 Dec – 5 Jan", sub:"6 nights · includes New Year's Eve", in:"2026-12-30", out:"2027-01-05", nights:6,
      note:"Peak of the season. Expect minimum stays of 5–7 nights in Zakopane and South Tyrol, and New Year packages with a gala dinner in Romania."},
+  C:{label:"1 Jan – 6 Jan", sub:"5 nights · arrive on New Year's Day", in:"2027-01-01", out:"2027-01-06", nights:5,
+     note:"Skips the New Year's Eve surcharge, so nightly rates are close to the 2–6 Jan level. 1 January is a public holiday everywhere: trains run on Sunday timetables and some flights are thinner, so start early or travel on 31 Dec evening."},
   B:{label:"2 Jan – 6 Jan", sub:"4 nights · after New Year", in:"2027-01-02", out:"2027-01-06", nights:4,
      note:"Still high season up to Epiphany (6 Jan), but prices fall 30–50% after New Year's Eve and short stays are easier to find."}
 };
@@ -265,7 +268,7 @@ const DESTS = [
   {id:"zak", name:"Zakopane", country:"Poland · Tatras · 838 m, lifts to 1,987 m", c:"--t-red", air:"KRK", q:"Zakopane, Poland",
    scores:{snow:3, carfree:4, ski:3, quiet:1},
    tags:[["Biggest New Year party","good"],["Very crowded","warn"],["Cheapest housing","good"]],
-   house:{A:[450,900],B:[250,520], tax:1, min:"5–7 nights around New Year is common", local:[["Nocowanie.pl New Year","https://sylwester.nocowanie.pl/zakopane/"],["ZakopaneDomki","https://zakopanedomki.com/domki-w-gorach-sylwester-i-swieta.html"]],
+   house:{A:[450,900],C:[270,560],B:[250,520], tax:1, min:"5–7 nights around New Year is common", local:[["Nocowanie.pl New Year","https://sylwester.nocowanie.pl/zakopane/"],["ZakopaneDomki","https://zakopanedomki.com/domki-w-gorach-sylwester-i-swieta.html"]],
      tips:["Stay in Kościelisko or near the Kuźnice/Kasprowy bus line to skip Krupówki traffic.","Białka Tatrzańska (best ski area nearby) is 40 min by bus.","Many ‘domki’ list 4 bedrooms plus a sofa bed: count only the bedrooms."]},
    travel:{
      PAR:{h:7.5, cost:[160,340], route:"Fly CDG/ORY/Beauvais → Kraków (easyJet, Transavia, Ryanair, ~2h15). Airport train to Kraków Główny, then bus (every 30–60 min, ~2h15) or PKP Intercity train (~2h30) to Zakopane.", links:[["Flights","gf:CDG:KRK"],["Kraków→Zakopane trains","https://www.intercity.pl/en/"]]},
@@ -276,7 +279,7 @@ const DESTS = [
   {id:"tat", name:"High Tatras", country:"Slovakia · Starý Smokovec / T. Lomnica · 1,000 m, lifts to 2,190 m", c:"--t-blue", air:"BTS", q:"Starý Smokovec, Slovakia",
    scores:{snow:4, carfree:5, ski:4, quiet:4},
    tags:[["Electric mountain railway","good"],["Quiet, same peaks as Zakopane","good"],["Longer trip from France","warn"]],
-   house:{A:[320,650],B:[200,420], tax:2.5, min:"3–5 nights; New Year prices often ‘on request’", local:[["Hauzi.sk New Year chalets","https://www.hauzi.sk/vysoke-tatry/silvester"],["Hauzi.sk Starý Smokovec","https://www.hauzi.sk/chaty-chalupy/mesto-vysoke-tatry-stary-smokovec"]],
+   house:{A:[320,650],C:[220,450],B:[200,420], tax:2.5, min:"3–5 nights; New Year prices often ‘on request’", local:[["Hauzi.sk New Year chalets","https://www.hauzi.sk/vysoke-tatry/silvester"],["Hauzi.sk Starý Smokovec","https://www.hauzi.sk/chaty-chalupy/mesto-vysoke-tatry-stary-smokovec"]],
      tips:["Pick a chalet within walking distance of a TEŽ stop (Starý Smokovec, Tatranská Lomnica, Horný Smokovec).","Skiing: Tatranská Lomnica (to Skalnaté pleso) and Štrbské Pleso, both by TEŽ train.","Slovak ‘chaty’ are often rented whole with 4–6 bedrooms, frequently with sauna."]},
    travel:{
      PAR:{h:10, cost:[200,400], route:"Fly CDG → Vienna or Beauvais → Bratislava, then train to Poprad-Tatry (~4h from Bratislava) and the TEŽ electric railway up to Starý Smokovec (25 min). Alternative: fly via Vienna or Warsaw to Košice, then 1h15 by train.", links:[["Flights to BTS","gf:BVA:BTS"],["Flights to VIE","gf:CDG:VIE"],["Slovak trains (ZSSK)","https://www.zssk.sk/en/"]]},
@@ -287,7 +290,7 @@ const DESTS = [
   {id:"sin", name:"Sinaia / Bușteni", country:"Romania · Bucegi · 800–900 m, lifts to 2,000 m", c:"--t-green", air:"OTP", q:"Sinaia, Romania",
    scores:{snow:3, carfree:4, ski:3, quiet:2},
    tags:[["Best for Chișinău","good"],["Direct flights from all western cities","good"],["Busy with Bucharest crowds","warn"]],
-   house:{A:[450,1000],B:[200,420], tax:0.5, min:"3–4 nights over ‘Revelion’, often with gala dinner", local:[["Turistinfo Revelion Bușteni","https://www.turistinfo.ro/busteni/revelion-busteni.html"],["Turistinfo Revelion Sinaia","https://www.turistinfo.ro/sinaia/revelion-sinaia.html"],["Carta.ro Sinaia","https://carta.ro/revelion-sinaia/"]],
+   house:{A:[450,1000],C:[250,500],B:[200,420], tax:0.5, min:"3–4 nights over ‘Revelion’, often with gala dinner", local:[["Turistinfo Revelion Bușteni","https://www.turistinfo.ro/busteni/revelion-busteni.html"],["Turistinfo Revelion Sinaia","https://www.turistinfo.ro/sinaia/revelion-sinaia.html"],["Carta.ro Sinaia","https://carta.ro/revelion-sinaia/"]],
      tips:["Whole villas (‘vilă închiriată integral’) with 4–5 bedrooms are common; a 2021 Sinaia example with 4 bedrooms and 4 bathrooms cost about €2,200 for New Year.","Skiing: Sinaia gondola to Cota 2000; Predeal and Azuga are one or two stops further on the same line.","Peleș Castle in Sinaia is a good bad-weather day."]},
    travel:{
      PAR:{h:8, cost:[180,380], route:"Fly CDG/ORY/Beauvais → Bucharest Otopeni (Air France, TAROM, Wizz, ~3h). Train from the airport station to Bucharest Nord, then a CFR train to Sinaia (1h30–2h) or Bușteni (+10 min).", links:[["Flights","gf:CDG:OTP"],["CFR tickets","https://bilete.cfrcalatori.ro/en-GB"]]},
@@ -298,7 +301,7 @@ const DESTS = [
   {id:"dol", name:"San Candido", country:"Italy · Dolomites, Alta Pusteria · 1,175 m, lifts to 2,200 m", c:"--t-yellow", air:"VCE", q:"San Candido, Italy",
    scores:{snow:5, carfree:5, ski:5, quiet:4},
    tags:[["Train station in town","good"],["Dolomiti Superski","good"],["Most expensive","bad"]],
-   house:{A:[750,1500],B:[550,1100], tax:4, min:"7 nights common over Christmas–Epiphany", local:[["Booking Südtirol San Candido","https://www.bookingsuedtirol.com/innichensancandido/ferienwohnung"],["Südtirol.info stays","https://www.suedtirol.info/en/en/accommodations/plp/tvs/innichen---san-candido"]],
+   house:{A:[750,1500],C:[600,1200],B:[550,1100], tax:4, min:"7 nights common over Christmas–Epiphany", local:[["Booking Südtirol San Candido","https://www.bookingsuedtirol.com/innichensancandido/ferienwohnung"],["Südtirol.info stays","https://www.suedtirol.info/en/en/accommodations/plp/tvs/innichen---san-candido"]],
      tips:["Single 4-bedroom units are rare. Two 2-bedroom apartments in the same residence is the usual solution.","Skiing: Monte Baranci in town, Monte Elmo and Croda Rossa (3 Zinnen Dolomites) from the Versciaco gondola, which has its own train stop.","Ask the host for the guest card: in much of South Tyrol it includes free regional buses and trains."]},
    travel:{
      PAR:{h:10, cost:[180,380], route:"Fly to Venice (~1h45), then Cortina Express bus to Cortina (~2h15) and SAD bus 445 to Dobbiaco and San Candido (~1h). All-train option: TGV Paris Est → Munich (~5h40), then Munich → Innsbruck → Fortezza → San Candido (~5–6h), best with a night in Munich.", links:[["Flights","gf:CDG:VCE"],["Cortina Express","https://www.cortinaexpress.it/en/"],["Trains Munich → Innichen","https://www.thetrainline.com/en/train-times/munich-hbf-to-san-candido-innichen"]]},
@@ -309,7 +312,7 @@ const DESTS = [
   {id:"obe", name:"Oberstdorf", short:true, country:"Germany · Allgäu Alps · 815 m, lifts to 2,224 m", c:"--t-orange", air:"FMM", q:"Oberstdorf, Germany",
    scores:{snow:3, carfree:5, ski:3, quiet:3},
    tags:[["Shortest average journey","good"],["Train all the way from France","good"],["Chișinău flight 3×/week","warn"]],
-   house:{A:[400,800],B:[300,600], tax:3.5, min:"3–7 nights; houses with 4 bedrooms are fewer than apartments", local:[["Oberstdorf tourism","https://www.oberstdorf.de/"]],
+   house:{A:[400,800],C:[320,650],B:[300,600], tax:3.5, min:"3–7 nights; houses with 4 bedrooms are fewer than apartments", local:[["Oberstdorf tourism","https://www.oberstdorf.de/"]],
      tips:["The Four Hills ski-jumping tournament opens in Oberstdorf around 28–29 Dec: book early for the first dates.","Skiing: Fellhorn/Kanzelwand (crosses into Kleinwalsertal, Austria), Nebelhorn, Söllereck. Ski buses are free with the guest card.","German ‘Ferienhaus’ listings state the beds per room: look for ‘Doppelbett’ or ‘Einzelbetten’, avoid ‘Schlafcouch’."]},
    travel:{
      PAR:{h:7.5, cost:[120,260], route:"Direct TGV Paris Est → Ulm (~4h40, Paris–Munich line), then regional train via Kempten to Oberstdorf (~2h). Train all the way, no airport.", links:[["DB tickets","https://int.bahn.de/en"],["SNCF Connect","https://www.sncf-connect.com/en-en/"]]},
@@ -320,7 +323,7 @@ const DESTS = [
   {id:"krk", name:"Krkonoše", short:true, country:"Czechia · Špindlerův Mlýn · 715 m, lifts to 1,310 m", c:"--t-purple", air:"PRG", q:"Špindlerův Mlýn, Czechia",
    scores:{snow:3, carfree:4, ski:3, quiet:3},
    tags:[["Prague: direct from every city","good"],["Low prices","good"],["Lower mountains","warn"]],
-   house:{A:[300,600],B:[180,380], tax:1, min:"New Year stays of 5–7 nights are common for whole ‘chalupy’", local:[["e-chalupy.cz Krkonoše","https://www.e-chalupy.cz/krkonose"],["Hauzi.cz","https://www.hauzi.cz/"]],
+   house:{A:[300,600],C:[200,420],B:[180,380], tax:1, min:"New Year stays of 5–7 nights are common for whole ‘chalupy’", local:[["e-chalupy.cz Krkonoše","https://www.e-chalupy.cz/krkonose"],["Hauzi.cz","https://www.hauzi.cz/"]],
      tips:["Whole cottages (‘chalupa’, ‘chata’) with 4–6 bedrooms are the standard group rental here, often with sauna.","Skiing: SkiArena Špindlerův Mlýn (Svatý Petr, Medvědín, Horní Mísečky). Pec pod Sněžkou and Harrachov are alternatives.","Czech for sofa bed: ‘rozkládací gauč’ or ‘pohovka’. Ask for ‘manželská postel’ (double) or ‘samostatná lůžka’ (singles)."]},
    travel:{
      PAR:{h:6.5, cost:[150,320], route:"Fly CDG/ORY/Beauvais → Prague (~1h45), bus to Černý Most, then direct bus to Špindlerův Mlýn (~2h30).", links:[["Flights","gf:CDG:PRG"],["Buses (IDOS)","https://idos.cz/en/"]]},
@@ -331,7 +334,7 @@ const DESTS = [
   {id:"gas", name:"Bad Gastein", short:true, country:"Austria · Gastein valley · 1,000 m, lifts to 2,686 m", c:"--t-black", air:"MUC", q:"Bad Gastein, Austria",
    scores:{snow:4, carfree:5, ski:5, quiet:3},
    tags:[["Direct EC from Munich","good"],["Big ski area, good snow","good"],["Sat–Sat stays common","warn"]],
-   house:{A:[550,1100],B:[400,850], tax:2.5, min:"7 nights, often Saturday to Saturday, over New Year", local:[["Gastein tourism","https://www.gastein.com/en/"]],
+   house:{A:[550,1100],C:[450,900],B:[400,850], tax:2.5, min:"7 nights, often Saturday to Saturday, over New Year", local:[["Gastein tourism","https://www.gastein.com/en/"]],
      tips:["The Stubnerkogel gondola is a short walk from the station; Schlossalm is one train stop away in Bad Hofgastein.","Belle Époque town with thermal spas (Felsentherme): good for non-skiers.","Austrian holiday houses often rent Saturday to Saturday: 2–6 Jan fits poorly, 30 Dec–6 Jan may need a 2 Jan start."]},
    travel:{
      PAR:{h:8, cost:[160,340], route:"Fly CDG → Munich (~1h35), then train to Bad Gastein (~3h from Munich Hbf, 4 direct EuroCity trains a day). All-train: TGV to Munich (~5h40) + EC (~3h).", links:[["Flights","gf:CDG:MUC"],["ÖBB","https://www.oebb.at/en/"]]},
