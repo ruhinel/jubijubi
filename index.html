@@ -85,6 +85,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,select:focus-visible{ou
 .kv dt{color:var(--muted)} .kv dd{margin:0;text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
 .bar{height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}
 .bar i{display:block;height:100%;background:var(--c)}
+.photolink{font-size:13px;font-weight:600}
 .chips{display:flex;flex-wrap:wrap;gap:5px}
 .chip{font-size:12px;padding:2px 8px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);white-space:nowrap}
 .chip.good{border-color:color-mix(in srgb,var(--good) 45%,transparent);color:var(--good)}
@@ -545,6 +546,7 @@ function render(){
       </dl>
       <div class="bar" aria-hidden="true"><i style="width:${Math.max(4,x.score)}%"></i></div>
       <div class="chips">${d.tags.map(t=>`<span class="chip ${t[1]}">${t[0]}</span>`).join("")}</div>
+      <a class="photolink" href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(d.q.split(",")[0]+" winter")}" target="_blank" rel="noopener">Winter photos of ${d.name} ↗</a>
     </article>`;}).join("");
 
   // travel-time heat grid
