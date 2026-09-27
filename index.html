@@ -114,7 +114,7 @@ tr:last-child td,tr:last-child th{border-bottom:0}
 .house{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--c);border-radius:10px;padding:16px;display:grid;gap:10px;align-content:start}
 .house .quote{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:14px}
 .house .quote input{width:110px}
-.house ul{margin:0;padding-left:18px;font-size:14px;display:grid;gap:4px}
+.house ul.tips{margin:0;padding-left:18px;font-size:14px;display:grid;gap:4px}
 .linkrow{display:flex;flex-wrap:wrap;gap:6px}
 .linkrow a{font-size:13px;font-weight:600;text-decoration:none;border:1px solid var(--line);padding:5px 9px;border-radius:6px;background:var(--surface-2)}
 .linkrow a:hover{border-color:var(--accent)}
@@ -142,7 +142,41 @@ footer ul{margin:0;padding-left:18px;columns:2 320px}
 .leg.f{stroke-dasharray:8 6} .leg.b{stroke-dasharray:1.5 5} .leg.n{stroke-dasharray:14 4 2 4}
 .maplegend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted);align-items:center}
 .maplegend svg{vertical-align:middle;margin-right:6px}
-.routecards{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.routecards{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.rc .legs{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:6px}
+.rc .legs li{display:grid;grid-template-columns:62px 1fr;gap:8px;align-items:start}
+.rc .mode{font:600 11px var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:2px}
+.rc .legs a{font-weight:600;font-size:12px;margin-right:8px;white-space:nowrap}
+.rc .desc{color:var(--muted);font-size:12.5px;line-height:1.45}
+.rc .more{font-size:12px;display:flex;gap:8px;flex-wrap:wrap}
+/* heat grid */
+table.heat{min-width:640px}
+table.heat td{min-width:0}
+table.heat th,table.heat td{padding:0;border-bottom:1px solid var(--surface)}
+table.heat thead th{padding:10px 12px;font:700 14px var(--display);font-stretch:85%;text-align:center;background:var(--surface)}
+table.heat thead th small{display:block;font:400 12px var(--body);color:var(--muted)}
+table.heat thead th:first-child{text-align:left}
+table.heat tbody th{padding:8px 12px;background:var(--surface);cursor:pointer;width:180px;white-space:normal}
+table.heat tbody th .dn{display:flex;align-items:center;gap:8px;font:700 15px var(--display);font-stretch:85%}
+table.heat tbody th .dn i{width:12px;height:12px;border-radius:2px;background:var(--c);flex:none}
+table.heat tbody tr:hover th,table.heat tbody tr.sel th{background:var(--surface-2)}
+table.heat tbody tr.sel th{box-shadow:inset 4px 0 0 var(--c)}
+.hc{display:grid;gap:1px;padding:8px 10px;text-align:center;border-left:2px solid var(--surface);min-width:112px}
+.hc b{font:600 17px var(--mono);font-variant-numeric:tabular-nums}
+.hc span{font-size:11.5px;opacity:.85}
+.hc.fast b::after{content:" ★";font-size:12px}
+.avgc{padding:8px 12px;min-width:170px;background:var(--surface)}
+.avgc b{font:600 15px var(--mono);font-variant-numeric:tabular-nums}
+.avgbar{height:8px;border-radius:0 4px 4px 0;background:var(--c);margin-top:4px}
+.heatkey{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;font-size:12.5px;color:var(--muted)}
+.heatkey .ramp{display:flex;align-items:center;gap:6px}
+.heatkey .ramp i{display:inline-block;width:26px;height:12px;border-radius:2px}
+/* housing picks */
+.picks{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.picks li{border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--surface-2);display:grid;gap:2px;font-size:13.5px}
+.picks li a{font-weight:700;font-size:14px}
+.picks li .pm{color:var(--muted);font-size:12.5px}
+.picks li .warnline{color:var(--warn);font-size:12.5px}
 .rc{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--oc);border-radius:8px;padding:10px 12px;font-size:13px;display:grid;gap:4px}
 .rc strong{font-size:14px}
 @media (prefers-reduced-motion:no-preference){.bar i{transition:width .35s ease}}
@@ -197,8 +231,12 @@ footer ul{margin:0;padding-left:18px;columns:2 320px}
 <section aria-labelledby="h-travel">
   <div class="sechead">
     <h2 id="h-travel">Getting there without a car</h2>
-    <p class="muted">Door-to-door time one way and return fare per person, estimated for the holiday peak. The green outline marks the easiest destination for each city. Search links open with your dates filled in.</p>
+    <p class="muted">Door-to-door time, one way, from each city. Darker cells mean longer journeys; destinations are sorted by the group's average. Select a row to see its routes on the map.</p>
   </div>
+  <div class="tablebox"><table class="heat" id="heat"></table></div>
+  <div class="heatkey" id="heatkey"></div>
+  <h3 id="h-routes">Routes and dated searches</h3>
+  <p class="muted note">Every link opens with your dates: flights in Google Flights (outbound and return), trains and buses in the ÖBB journey planner, which covers rail across Europe. Pick a destination:</p>
   <div class="seg" id="routepick" role="group" aria-label="Destination for the route map"></div>
   <div class="mapbox"><svg id="routemap" role="img" aria-label="Route map from each departure city"></svg></div>
   <div class="maplegend">
@@ -208,7 +246,6 @@ footer ul{margin:0;padding-left:18px;columns:2 320px}
     <span><svg width="34" height="8"><line x1="2" y1="4" x2="32" y2="4" class="leg b" style="stroke:var(--muted)"/></svg>Bus</span>
   </div>
   <div class="routecards" id="routecards"></div>
-  <div class="tablebox"><table id="travel"></table></div>
 </section>
 
 <section aria-labelledby="h-house">
@@ -309,7 +346,7 @@ const DESTS = [
   {id:"zak", name:"Zakopane", country:"Poland · Tatras · 838 m, lifts to 1,987 m", c:"--t-red", air:"KRK", q:"Zakopane, Poland",
    scores:{snow:3, carfree:4, ski:3, quiet:1},
    tags:[["Biggest New Year party","good"],["Very crowded","warn"],["Cheapest housing","good"]],
-   house:{A:[450,900],C:[270,560],B:[250,520], tax:1, min:"5–7 nights around New Year is common", local:[["Nocowanie.pl New Year","https://sylwester.nocowanie.pl/zakopane/"],["ZakopaneDomki","https://zakopanedomki.com/domki-w-gorach-sylwester-i-swieta.html"]],
+   house:{picks:[{"n": "Willa Uroczysko, Kościelisko", "u": "https://willauroczysko.pl/", "what": "Historic wooden villa rented whole: 4 closed bedrooms, 3 bathrooms, sauna, Tatra views. Up to 10 guests.", "warn": "The listing mentions 1 sofa among the sleeping places: confirm 8 people sleep in beds."}, {"n": "Sopa Zakopane", "u": "https://zakopanedomki.com/domki-4-i-wiecej-sypialni.html", "what": "Góral-style house for up to 10 with sauna, jacuzzi, garden and Tatra views. Listed among the 4+ bedroom houses."}, {"n": "New 4-bedroom house, Murzasichle", "u": "https://zakopanedomki.com/domki-w-gorach-sylwester-i-swieta.html", "what": "Built 2021: 4 bedrooms, 4 bathrooms, fireplace living room, rented whole for 8–16. Murzasichle is 15 min by bus from Zakopane.", "price": "Minimum 7 nights over New Year."}], A:[450,900],C:[270,560],B:[250,520], tax:1, min:"5–7 nights around New Year is common", local:[["Nocowanie.pl New Year","https://sylwester.nocowanie.pl/zakopane/"],["ZakopaneDomki","https://zakopanedomki.com/domki-w-gorach-sylwester-i-swieta.html"]],
      tips:["Stay in Kościelisko or near the Kuźnice/Kasprowy bus line to skip Krupówki traffic.","Białka Tatrzańska (best ski area nearby) is 40 min by bus.","Many ‘domki’ list 4 bedrooms plus a sofa bed: count only the bedrooms."]},
    travel:{
      PAR:{h:7.5, cost:[160,340], route:"Fly CDG/ORY/Beauvais → Kraków (easyJet, Transavia, Ryanair, ~2h15). Airport train to Kraków Główny, then bus (every 30–60 min, ~2h15) or PKP Intercity train (~2h30) to Zakopane.", links:[["Flights","gf:CDG:KRK"],["Kraków→Zakopane trains","https://www.intercity.pl/en/"]]},
@@ -320,7 +357,7 @@ const DESTS = [
   {id:"tat", name:"High Tatras", country:"Slovakia · Starý Smokovec / T. Lomnica · 1,000 m, lifts to 2,190 m", c:"--t-blue", air:"BTS", q:"Starý Smokovec, Slovakia",
    scores:{snow:4, carfree:5, ski:4, quiet:4},
    tags:[["Electric mountain railway","good"],["Quiet, same peaks as Zakopane","good"],["Longer trip from France","warn"]],
-   house:{A:[320,650],C:[220,450],B:[200,420], tax:2.5, min:"3–5 nights; New Year prices often ‘on request’", local:[["Hauzi.sk New Year chalets","https://www.hauzi.sk/vysoke-tatry/silvester"],["Hauzi.sk Starý Smokovec","https://www.hauzi.sk/chaty-chalupy/mesto-vysoke-tatry-stary-smokovec"]],
+   house:{picks:[{"n": "Chalets Royal, Tatranská Lomnica", "u": "https://www.readytotrip.com/hotels/Slovakia/Pre%C5%A1ovsk%C3%BD%20kraj/High%20Tatras/Star%C3%BD%20Smokovec/Vysok%C3%A9%20Tatry/Tatransk%C3%A1%20Lomnica/chalets-royal-tatranska-lomnica/", "what": "Whole chalet: 4 separate bedrooms, 5 bathrooms, living room. Up to 10 guests. Walk to the TEŽ stop and the Lomnica lifts."}, {"n": "Chalet Lomnica, Tatranská Lomnica", "u": "https://en.megaubytovanie.sk/stary-smokovec/cottages", "what": "5-star chalet for 10: five bedrooms, two bathrooms, whirlpool. One spare bedroom beyond your four."}, {"n": "4-bedroom house, Starý Smokovec", "u": "https://en.megaubytovanie.sk/stary-smokovec/cottages", "what": "Listed with 8 beds, 4 bedrooms and 4 bathrooms, plus extra beds you would not need. In the village with the TEŽ station.", "warn": "Unnamed in search results: pick it from the Starý Smokovec cottages list."}], A:[320,650],C:[220,450],B:[200,420], tax:2.5, min:"3–5 nights; New Year prices often ‘on request’", local:[["Hauzi.sk New Year chalets","https://www.hauzi.sk/vysoke-tatry/silvester"],["Hauzi.sk Starý Smokovec","https://www.hauzi.sk/chaty-chalupy/mesto-vysoke-tatry-stary-smokovec"]],
      tips:["Pick a chalet within walking distance of a TEŽ stop (Starý Smokovec, Tatranská Lomnica, Horný Smokovec).","Skiing: Tatranská Lomnica (to Skalnaté pleso) and Štrbské Pleso, both by TEŽ train.","Slovak ‘chaty’ are often rented whole with 4–6 bedrooms, frequently with sauna."]},
    travel:{
      PAR:{h:10, cost:[200,400], route:"Fly CDG → Vienna or Beauvais → Bratislava, then train to Poprad-Tatry (~4h from Bratislava) and the TEŽ electric railway up to Starý Smokovec (25 min). Alternative: fly via Vienna or Warsaw to Košice, then 1h15 by train.", links:[["Flights to BTS","gf:BVA:BTS"],["Flights to VIE","gf:CDG:VIE"],["Slovak trains (ZSSK)","https://www.zssk.sk/en/"]]},
@@ -331,7 +368,7 @@ const DESTS = [
   {id:"sin", name:"Sinaia / Bușteni", country:"Romania · Bucegi · 800–900 m, lifts to 2,000 m", c:"--t-green", air:"OTP", q:"Sinaia, Romania",
    scores:{snow:3, carfree:4, ski:3, quiet:2},
    tags:[["Best for Chișinău","good"],["Direct flights from all western cities","good"],["Busy with Bucharest crowds","warn"]],
-   house:{A:[450,1000],C:[250,500],B:[200,420], tax:0.5, min:"3–4 nights over ‘Revelion’, often with gala dinner", local:[["Turistinfo Revelion Bușteni","https://www.turistinfo.ro/busteni/revelion-busteni.html"],["Turistinfo Revelion Sinaia","https://www.turistinfo.ro/sinaia/revelion-sinaia.html"],["Carta.ro Sinaia","https://carta.ro/revelion-sinaia/"]],
+   house:{picks:[{"n": "Alpine Bliss, Sinaia", "u": "https://www.turistinfo.ro/sinaia/revelion-sinaia.html", "what": "Rented whole: four double bedrooms, up to 10 adults.", "price": "New Year: 3,000 RON (≈€600) per night, minimum 3 nights."}, {"n": "Casa Zoma, Sinaia", "u": "https://www.turistinfo.ro/sinaia/cazare-hoteluri-vile-pensiuni-sinaia.html", "what": "4 double rooms for 8–12 people, with a barbecue room. Aimed at groups."}, {"n": "Vila Gabi, Bușteni", "u": "https://www.turistinfo.ro/busteni/revelion-busteni.html", "what": "Four spacious bedrooms with living room and kitchen, rented whole. Bușteni station is one stop after Sinaia."}], A:[450,1000],C:[250,500],B:[200,420], tax:0.5, min:"3–4 nights over ‘Revelion’, often with gala dinner", local:[["Turistinfo Revelion Bușteni","https://www.turistinfo.ro/busteni/revelion-busteni.html"],["Turistinfo Revelion Sinaia","https://www.turistinfo.ro/sinaia/revelion-sinaia.html"],["Carta.ro Sinaia","https://carta.ro/revelion-sinaia/"]],
      tips:["Whole villas (‘vilă închiriată integral’) with 4–5 bedrooms are common; a 2021 Sinaia example with 4 bedrooms and 4 bathrooms cost about €2,200 for New Year.","Skiing: Sinaia gondola to Cota 2000; Predeal and Azuga are one or two stops further on the same line.","Peleș Castle in Sinaia is a good bad-weather day."]},
    travel:{
      PAR:{h:8, cost:[180,380], route:"Fly CDG/ORY/Beauvais → Bucharest Otopeni (Air France, TAROM, Wizz, ~3h). Train from the airport station to Bucharest Nord, then a CFR train to Sinaia (1h30–2h) or Bușteni (+10 min).", links:[["Flights","gf:CDG:OTP"],["CFR tickets","https://bilete.cfrcalatori.ro/en-GB"]]},
@@ -342,7 +379,7 @@ const DESTS = [
   {id:"dol", name:"San Candido", country:"Italy · Dolomites, Alta Pusteria · 1,175 m, lifts to 2,200 m", c:"--t-yellow", air:"VCE", q:"San Candido, Italy",
    scores:{snow:5, carfree:5, ski:5, quiet:4},
    tags:[["Train station in town","good"],["Dolomiti Superski","good"],["Most expensive","bad"]],
-   house:{A:[750,1500],C:[600,1200],B:[550,1100], tax:4, min:"7 nights common over Christmas–Epiphany", local:[["Booking Südtirol San Candido","https://www.bookingsuedtirol.com/innichensancandido/ferienwohnung"],["Südtirol.info stays","https://www.suedtirol.info/en/en/accommodations/plp/tvs/innichen---san-candido"]],
+   house:{picks:[{"n": "Residence San Candido (2 apartments)", "u": "https://www.suedtirol.info/en/en/accommodation/pdp-accommodation.3062D1C6A417C985FB621A2C0B869D5E.residence-san-candido--innichen.s--candido-innichen", "what": "Eight apartments of 55–80 m² in the pedestrian centre, each with at least 2 bedrooms. Book two side by side for 4 bedrooms. 5 min walk to the station."}, {"n": "Panoramic chalet near Toblach/Dobbiaco", "u": "https://www.alpen-chalets.de/hochpustertal", "what": "Modern chalet for up to 14 above Dobbiaco, one train stop from San Candido.", "warn": "Check how far it is from the bus stop."}, {"n": "Chalet Comici, Croda Rossa slope", "u": "https://www.bookingsuedtirol.com/innichensancandido/ferienwohnung", "what": "Ski-in/ski-out on the Croda Rossa run, private spa with sauna and hot tub. Sleeps 8.", "warn": "Only 3 en-suite bedrooms: works only if 2 people share one."}], A:[750,1500],C:[600,1200],B:[550,1100], tax:4, min:"7 nights common over Christmas–Epiphany", local:[["Booking Südtirol San Candido","https://www.bookingsuedtirol.com/innichensancandido/ferienwohnung"],["Südtirol.info stays","https://www.suedtirol.info/en/en/accommodations/plp/tvs/innichen---san-candido"]],
      tips:["Single 4-bedroom units are rare. Two 2-bedroom apartments in the same residence is the usual solution.","Skiing: Monte Baranci in town, Monte Elmo and Croda Rossa (3 Zinnen Dolomites) from the Versciaco gondola, which has its own train stop.","Ask the host for the guest card: in much of South Tyrol it includes free regional buses and trains."]},
    travel:{
      PAR:{h:10, cost:[180,380], route:"Fly to Venice (~1h45), then Cortina Express bus to Cortina (~2h15) and SAD bus 445 to Dobbiaco and San Candido (~1h). All-train option: TGV Paris Est → Munich (~5h40), then Munich → Innsbruck → Fortezza → San Candido (~5–6h), best with a night in Munich.", links:[["Flights","gf:CDG:VCE"],["Cortina Express","https://www.cortinaexpress.it/en/"],["Trains Munich → Innichen","https://www.thetrainline.com/en/train-times/munich-hbf-to-san-candido-innichen"]]},
@@ -353,7 +390,7 @@ const DESTS = [
   {id:"obe", name:"Oberstdorf", short:true, country:"Germany · Allgäu Alps · 815 m, lifts to 2,224 m", c:"--t-orange", air:"FMM", q:"Oberstdorf, Germany",
    scores:{snow:3, carfree:5, ski:3, quiet:3},
    tags:[["Shortest average journey","good"],["Train all the way from France","good"],["Chișinău flight 3×/week","warn"]],
-   house:{A:[400,800],C:[320,650],B:[300,600], tax:3.5, min:"3–7 nights; houses with 4 bedrooms are fewer than apartments", local:[["Oberstdorf tourism","https://www.oberstdorf.de/"]],
+   house:{picks:[{"n": "Das Ferienhaus Oberstdorf", "u": "https://www.oberstdorf.de/partner/das-ferienhaus-oberstdorf.html", "what": "170 m², 4 bedrooms plus a children's room, 2 bathrooms, sauna, winter garden facing the ski jumps. A few minutes' walk from the station. 2–10 guests."}, {"n": "Charming house, Oberstdorf-Reichenbach", "u": "https://www.fewo-direkt.de/ferienwohnung-ferienhaus/p5519382", "what": "4 bedrooms, 8 beds, 2 bathrooms, sauna. Ski-bus stop 50 m away. Max. 8 guests."}, {"n": "Ferienhaus Iris", "u": "https://ferienhaus-iris.de/", "what": "4 bedrooms, fireplace, south terrace, 5 min walk from the station.", "warn": "Licensed for 7: ask whether 8 is possible."}], A:[400,800],C:[320,650],B:[300,600], tax:3.5, min:"3–7 nights; houses with 4 bedrooms are fewer than apartments", local:[["Oberstdorf tourism","https://www.oberstdorf.de/"]],
      tips:["The Four Hills ski-jumping tournament opens in Oberstdorf around 28–29 Dec: book early for the first dates.","Skiing: Fellhorn/Kanzelwand (crosses into Kleinwalsertal, Austria), Nebelhorn, Söllereck. Ski buses are free with the guest card.","German ‘Ferienhaus’ listings state the beds per room: look for ‘Doppelbett’ or ‘Einzelbetten’, avoid ‘Schlafcouch’."]},
    travel:{
      PAR:{h:7.5, cost:[120,260], route:"Direct TGV Paris Est → Ulm (~4h40, Paris–Munich line), then regional train via Kempten to Oberstdorf (~2h). Train all the way, no airport.", links:[["DB tickets","https://int.bahn.de/en"],["SNCF Connect","https://www.sncf-connect.com/en-en/"]]},
@@ -364,7 +401,7 @@ const DESTS = [
   {id:"krk", name:"Krkonoše", short:true, country:"Czechia · Špindlerův Mlýn · 715 m, lifts to 1,310 m", c:"--t-purple", air:"PRG", q:"Špindlerův Mlýn, Czechia",
    scores:{snow:3, carfree:4, ski:3, quiet:3},
    tags:[["Prague: direct from every city","good"],["Low prices","good"],["Lower mountains","warn"]],
-   house:{A:[300,600],C:[200,420],B:[180,380], tax:1, min:"New Year stays of 5–7 nights are common for whole ‘chalupy’", local:[["e-chalupy.cz Krkonoše","https://www.e-chalupy.cz/krkonose"],["Hauzi.cz","https://www.hauzi.cz/"]],
+   house:{picks:[{"n": "Chata Špindlerův Mlýn (Region Krkonoše)", "u": "https://www.region-krkonose.cz/ubytovani/spindleruv-mlyn/chata-spindleruv-mlyn/", "what": "A few minutes' walk from the centre. Four double bedrooms among its seven rooms (up to 19): your group would use the doubles."}, {"n": "Chalupa Dias, Svatý Petr", "u": "https://www.e-chalupy.cz/krkonose/spindleruv_mlyn_ubytovani_chata_pronajmuti_dias_0424.php", "what": "Cottage next to the Svatý Petr ski area, 5 bedrooms, rented whole (13–22 people).", "warn": "Priced for large groups: ask for a price for 8."}, {"n": "New-built 4-bedroom chalupa", "u": "https://silvestr.e-chalupy.cz/krkonose/", "what": "Listed for New Year near Špindlerův Mlýn: 4 bedrooms, rented whole.", "warn": "Capacity 16 in 4 rooms means extra beds per room: ask for the bed list."}], A:[300,600],C:[200,420],B:[180,380], tax:1, min:"New Year stays of 5–7 nights are common for whole ‘chalupy’", local:[["e-chalupy.cz Krkonoše","https://www.e-chalupy.cz/krkonose"],["Hauzi.cz","https://www.hauzi.cz/"]],
      tips:["Whole cottages (‘chalupa’, ‘chata’) with 4–6 bedrooms are the standard group rental here, often with sauna.","Skiing: SkiArena Špindlerův Mlýn (Svatý Petr, Medvědín, Horní Mísečky). Pec pod Sněžkou and Harrachov are alternatives.","Czech for sofa bed: ‘rozkládací gauč’ or ‘pohovka’. Ask for ‘manželská postel’ (double) or ‘samostatná lůžka’ (singles)."]},
    travel:{
      PAR:{h:6.5, cost:[150,320], route:"Fly CDG/ORY/Beauvais → Prague (~1h45), bus to Černý Most, then direct bus to Špindlerův Mlýn (~2h30).", links:[["Flights","gf:CDG:PRG"],["Buses (IDOS)","https://idos.cz/en/"]]},
@@ -375,7 +412,7 @@ const DESTS = [
   {id:"gas", name:"Bad Gastein", short:true, country:"Austria · Gastein valley · 1,000 m, lifts to 2,686 m", c:"--t-black", air:"MUC", q:"Bad Gastein, Austria",
    scores:{snow:4, carfree:5, ski:5, quiet:3},
    tags:[["Direct EC from Munich","good"],["Big ski area, good snow","good"],["Sat–Sat stays common","warn"]],
-   house:{A:[550,1100],C:[450,900],B:[400,850], tax:2.5, min:"7 nights, often Saturday to Saturday, over New Year", local:[["Gastein tourism","https://www.gastein.com/en/"]],
+   house:{picks:[{"n": "Chalet Angertal, Bad Hofgastein", "u": "https://www.e-domizil.de/ferienhaus/2214826/chalet-angertal-bad-hofgastein-bad-hofgastein-gasteinertal-pongau-oesterreich/", "what": "Detached chalet for up to 10: 4 bedrooms each with its own bathroom, sauna and wellness area. Near the Angertal lifts."}, {"n": "Chalet Pflaume (Interhome), Bad Gastein", "u": "https://www.interhome.com/austria/gastein-valley/bad-gastein/", "what": "135 m², 4 bedrooms, 3 bathrooms, infrared sauna. Up to 10 guests."}, {"n": "Chalet near the slopes, Bad Hofgastein (Belvilla)", "u": "https://www.belvilla.de/at/100015219/", "what": "160 m² chalet with 4 bedrooms for 10 guests near the Schlossalm lifts."}], A:[550,1100],C:[450,900],B:[400,850], tax:2.5, min:"7 nights, often Saturday to Saturday, over New Year", local:[["Gastein tourism","https://www.gastein.com/en/"]],
      tips:["The Stubnerkogel gondola is a short walk from the station; Schlossalm is one train stop away in Bad Hofgastein.","Belle Époque town with thermal spas (Felsentherme): good for non-skiers.","Austrian holiday houses often rent Saturday to Saturday: 2–6 Jan fits poorly, 30 Dec–6 Jan may need a 2 Jan start."]},
    travel:{
      PAR:{h:8, cost:[160,340], route:"Fly CDG → Munich (~1h35), then train to Bad Gastein (~3h from Munich Hbf, 4 direct EuroCity trains a day). All-train: TGV to Munich (~5h40) + EC (~3h).", links:[["Flights","gf:CDG:MUC"],["ÖBB","https://www.oebb.at/en/"]]},
@@ -386,7 +423,7 @@ const DESTS = [
   {id:"aur", name:"Auron / Isola 2000", short:true, fr:true, country:"France · Alpes-Maritimes · 1,600 m, lifts to 2,450 m", c:"--t-teal", air:"NCE", q:"Auron, France",
    scores:{snow:3, carfree:4, ski:4, quiet:3},
    tags:[["Direct flights to Nice from all 4 cities","good"],["€1.50 bus from the airport","good"],["Only 2 buses a day","warn"]],
-   house:{A:[500,1000],C:[350,700],B:[250,550], tax:2, min:"Saturday to Saturday is the norm; 2 Jan is a Saturday", local:[["Auron resort","https://www.auron.com/"],["Isola 2000 resort","https://isola2000.com/en/"]],
+   house:{picks:[{"n": "Chalet Familial Auron", "u": "https://www.booking.com/hotel/fr/chalet-familial-auron.html", "what": "Whole chalet: 4 bedrooms, 2 bathrooms, 8 people, patio with slope views."}, {"n": "Luxury chalet ref. AU7 (Alexandra Lloyd)", "u": "https://www.alexandra-lloyd.com/fr/form_locations.php?reference=AU7", "what": "180 m² chalet with 4 bedrooms in Auron, through a local agency."}, {"n": "Chalet La Grange, Auron", "u": "https://www.cozycozy.com/us/auron-chalet", "what": "4 bedrooms, 3 bathrooms, 140 m² for up to 8, private sauna and garden."}], A:[500,1000],C:[350,700],B:[250,550], tax:2, min:"Saturday to Saturday is the norm; 2 Jan is a Saturday", local:[["Auron resort","https://www.auron.com/"],["Isola 2000 resort","https://isola2000.com/en/"]],
      tips:["Auron is an old village with real chalets; Isola 2000 (2,000 m, better snow) is mostly apartment blocks.","French ski flats often sleep people in a ‘coin montagne’ bunk alcove or on a ‘canapé convertible’: check the room-by-room bed list.","French school holidays end on 4 Jan, so the week of 2–9 Jan is one of the cheapest of the season."]},
    travel:{
      PAR:{h:5.5, cost:[150,320], route:"Fly Orly/CDG → Nice (~1h25, many flights a day), then Lignes d'Azur bus from the airport to Auron or Isola 2000 (~2h05, €1.50; winter ski buses need booking the day before). Buses run only morning and late afternoon, so match your flight. All-train: TGV Paris → Nice ~6h.", links:[["Flights","gf:ORY:NCE"],["Lignes d'Azur ski buses","https://www.lignesdazur.com/"]]},
@@ -397,7 +434,7 @@ const DESTS = [
   {id:"cha", name:"Chamonix", short:true, fr:true, country:"France · Mont Blanc · 1,035 m, lifts to 3,842 m", c:"--t-pink", air:"GVA", q:"Chamonix-Mont-Blanc, France",
    scores:{snow:4, carfree:5, ski:5, quiet:2},
    tags:[["Train or 1h15 bus from Geneva","good"],["Mid-week arrivals easier","good"],["Expensive, busy","bad"]],
-   house:{A:[900,1800],C:[650,1300],B:[500,1000], tax:3, min:"5–7 nights over New Year; as a year-round town, mid-week arrivals are easier than in purpose-built resorts", local:[["Chamonix tourism","https://www.chamonix.com/"]],
+   house:{picks:[{"n": "Chalet Couttet, Chamonix centre", "u": "https://www.vrbo.com/10764209ha", "what": "Self-catered chalet: 4 bedrooms for 8, sunny terrace, log fire, Mont Blanc views, walk to the town centre."}, {"n": "Chalet Shanti", "u": "https://chamonixallyear.com/chamonix-chalets/4-bedroom-self-catered-chalets/", "what": "Self-catered, 4 bedrooms, 3 bathrooms, sleeps 8."}, {"n": "Pic Vert (Marmotte Mountain), Argentière", "u": "https://chamonixallyear.com/chamonix-chalets/4-bedroom-self-catered-chalets/", "what": "4-bedroom chalet in the old village of Argentière, next to the Grands Montets and on the Mont-Blanc Express line."}], A:[900,1800],C:[650,1300],B:[500,1000], tax:3, min:"5–7 nights over New Year; as a year-round town, mid-week arrivals are easier than in purpose-built resorts", local:[["Chamonix tourism","https://www.chamonix.com/"]],
      tips:["Ask for the ‘carte d'hôte’: free valley buses and the Chamonix–Vallorcine train.","Skiing: Brévent-Flégère, Grands Montets, Balme; Les Houches in bad weather.","Chalets for 8–10 are common but go fast for New Year."]},
    travel:{
      PAR:{h:6, cost:[130,300], route:"TGV Paris → Annecy or Bellegarde, then regional train to Saint-Gervais-Le Fayet and the Mont-Blanc Express to Chamonix (~6h). Or fly to Geneva (~1h10) and take the bus (~1h15).", links:[["SNCF Connect","https://www.sncf-connect.com/en-en/"],["Flights","gf:CDG:GVA"]]},
@@ -408,7 +445,7 @@ const DESTS = [
   {id:"arc", name:"Les Arcs", short:false, fr:true, country:"France · Tarentaise · 1,600–2,000 m, lifts to 3,226 m", c:"--t-brown", air:"GVA", q:"Les Arcs, Bourg-Saint-Maurice, France",
    scores:{snow:5, carfree:5, ski:5, quiet:3},
    tags:[["Funicular from the station","good"],["Huge ski area (Paradiski)","good"],["Far for Berlin and Chișinău","warn"]],
-   house:{A:[800,1600],C:[550,1100],B:[400,850], tax:2.5, min:"Saturday to Saturday almost everywhere; 2 Jan is a Saturday", local:[["Les Arcs by train","https://www.lesarcs.com/en/funicular"]],
+   house:{picks:[{"n": "Chalet Ponturin, Peisey-Vallandry", "u": "https://www.madamevacances.com/locations/france/alpes-du-nord/les-arcs-peisey-vallandry/", "what": "111 m² duplex with 4 bedrooms, each with its own bathroom, for 8–10. Take the train to Landry, then the shuttle bus up (≈20 min)."}, {"n": "Chalet Dahu, Plan-Peisey", "u": "https://www.location-chalet-peisey-vallandry.com/fr/", "what": "4 bedrooms for 10, 100 m from the Parchey lift in the Paradiski area.", "warn": "Two rooms sleep 3: check they are single beds, not bunks."}, {"n": "Chalet Pierra Menta, Plan-Peisey", "u": "https://www.chalet-savoie.com/en/winter-arcs-2/", "what": "Chalet for 8–10 in the upper part of Plan-Peisey.", "price": "Similar 4-bedroom chalets list at €1,590–8,182 per week depending on the week."}], A:[800,1600],C:[550,1100],B:[400,850], tax:2.5, min:"Saturday to Saturday almost everywhere; 2 Jan is a Saturday", local:[["Les Arcs by train","https://www.lesarcs.com/en/funicular"]],
      tips:["The funicular from Bourg-Saint-Maurice station to Arc 1600 takes 7 minutes and is free with a train ticket.","Big flats in Arc 1600/1800 often count bunk alcoves and sofa beds: look at chalets in Peisey-Vallandry or Villaroger, or insist on the bed list.","From 2 Jan (Saturday) French school holidays are over and prices drop sharply."]},
    travel:{
      PAR:{h:5.5, cost:[120,280], route:"TGV Paris → Bourg-Saint-Maurice (~5h; direct on winter weekends, otherwise change in Chambéry), then the funicular to Arc 1600.", links:[["SNCF Connect","https://www.sncf-connect.com/en-en/"],["Getting there by train","https://www.lesarcs.com/en/funicular"]]},
@@ -439,7 +476,15 @@ const active=()=>{const a=DESTS.filter(d=>!state.off[d.id]);return a.length?a:DE
 const totalPax=()=>Object.values(state.pax).reduce((a,b)=>a+(+b||0),0);
 
 function gf(from,to){ const p=P(); return "https://www.google.com/travel/flights?q="+encodeURIComponent(`Flights from ${from} to ${to} on ${p.in} through ${p.out}`); }
+const STN={PAR:"Paris",SXB:"Strasbourg",BER:"Berlin Hbf",KIV:"Chisinau",KRK:"Krakow Glowny",WAW:"Warszawa Centralna",BSL:"Basel SBB",FRA:"Frankfurt(Main)Hbf",VIE:"Wien Hbf",BTS:"Bratislava hl.st.",PRG:"Praha hl.n.",OTP:"Bucuresti Nord",MUC:"München Hbf",VCE:"Venezia Santa Lucia",INN:"Innsbruck Hbf",FMM:"Memmingen",ULM:"Ulm Hbf",AUG:"Augsburg Hbf",NCE:"Nice Ville",GVA:"Genève",LYS:"Lyon Part-Dieu",BVA:"Beauvais",
+  zak:"Zakopane",tat:"Stary Smokovec",sin:"Sinaia",dol:"San Candido/Innichen",obe:"Oberstdorf",krk:"Spindleruv Mlyn",gas:"Bad Gastein",aur:"Auron",cha:"Chamonix Mont-Blanc",arc:"Bourg-Saint-Maurice"};
+const IATA={PAR:"PAR",SXB:"SXB",BER:"BER",KIV:"RMO",KRK:"KRK",WAW:"WAW",BSL:"BSL",FRA:"FRA",VIE:"VIE",BTS:"BTS",PRG:"PRG",OTP:"OTP",MUC:"MUC",VCE:"VCE",FMM:"FMM",NCE:"NCE",GVA:"GVA",LYS:"LYS",BVA:"BVA"};
+function dmy(iso){ const [y,m,d]=iso.split("-"); return `${d}.${m}.${y.slice(2)}`; }
+function dshort(iso){ return new Date(iso+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"}); }
+function scotty(a,b,iso){ return `https://fahrplan.oebb.at/bin/query.exe/en?start=1&S=${encodeURIComponent(STN[a])}&Z=${encodeURIComponent(STN[b])}&date=${dmy(iso)}&time=07:00`; }
+function flightLeg(a,b){ return gf(IATA[a]||a, IATA[b]||b); }
 function link(u){ return u.startsWith("gf:")? gf(...u.slice(3).split(":")) : u; }
+function withDates(u){ const p=P(), n=Math.max(totalPax(),1); if(/booking\.com\/hotel/.test(u)) return u+(u.includes('?')?'&':'?')+`checkin=${p.in}&checkout=${p.out}&group_adults=${n}&no_rooms=1`; if(/vrbo\.com\/\d/.test(u)) return u+(u.includes('?')?'&':'?')+`chkin=${p.in}&chkout=${p.out}&startDate=${p.in}&endDate=${p.out}&adults=${n}`; return u; }
 function searchLinks(d){
   const p=P(), n=Math.max(totalPax(),1), q=encodeURIComponent(d.q);
   return [
@@ -495,12 +540,19 @@ function render(){
       <div class="chips">${d.tags.map(t=>`<span class="chip ${t[1]}">${t[0]}</span>`).join("")}</div>
     </article>`;}).join("");
 
-  // travel matrix
-  const bestFor={}; ORIGINS.forEach(o=>{ let b=null; active().forEach(d=>{ const t=d.travel[o.id], v=t.h*20+mid(t.cost); if(!b||v<b.v)b={id:d.id,v}; }); bestFor[o.id]=b.id; });
-  $("#travel").innerHTML=`<thead><tr><th scope="col">From</th>${active().map(d=>`<th scope="col" style="--c:var(${d.c})"><span></span>${d.name}</th>`).join("")}</tr></thead><tbody>${
-    ORIGINS.map(o=>`<tr><th scope="row">${o.name}<small>${state.pax[o.id]||0} travellers${o.sub?"<br>"+o.sub:""}</small></th>${
-      active().map(d=>{const t=d.travel[o.id];return `<td class="${bestFor[o.id]===d.id?"best":""}"><div class="line1"><span class="num">≈${t.h} h</span><span class="num">€${t.cost[0]}–${t.cost[1]}</span></div><div class="route">${t.route}</div><div class="links">${t.links.map(l=>`<a href="${link(l[1])}" target="_blank" rel="noopener">${l[0]}</a>`).join("")}</div></td>`;}).join("")
-    }</tr>`).join("")}</tbody>`;
+  // travel-time heat grid
+  const tp=totalPax()||1;
+  const rows=active().map(d=>{ const avg=ORIGINS.reduce((a,o)=>a+(+state.pax[o.id]||0)*d.travel[o.id].h,0)/tp; return {d,avg}; }).sort((a,b)=>a.avg-b.avg);
+  const allH=active().flatMap(d=>ORIGINS.map(o=>d.travel[o.id].h)), hMin=Math.min(...allH), hMax=Math.max(...allH);
+  const fastest={}; ORIGINS.forEach(o=>{ fastest[o.id]=Math.min(...active().map(d=>d.travel[o.id].h)); });
+  const maxAvg=Math.max(...rows.map(r=>r.avg));
+  const shade=h=>{ const t=(h-hMin)/((hMax-hMin)||1); return {bg:`color-mix(in srgb, var(--accent) ${Math.round(8+t*72)}%, var(--surface))`, fg: t>0.5?"var(--accent-ink)":"var(--ink)"}; };
+  const modesOf=(d,o)=>[...new Set(ROUTES[d.id][o.id].split(",").map(x=>MODE[x.trim().split(" ")[1]]))].join(" + ");
+  $("#heat").innerHTML=`<thead><tr><th scope="col">Destination</th>${ORIGINS.map(o=>`<th scope="col">${o.name}<small>${state.pax[o.id]||0} travelling</small></th>`).join("")}<th scope="col" style="text-align:left">Group average<small>weighted by travellers</small></th></tr></thead><tbody>${
+    rows.map(({d,avg})=>`<tr data-r="${d.id}" class="${d.id===routeSel?"sel":""}" style="--c:var(${d.c})" title="Show routes to ${d.name}"><th scope="row"><span class="dn"><i></i>${d.name}</span></th>${
+      ORIGINS.map(o=>{const t=d.travel[o.id], c=shade(t.h); return `<td><div class="hc ${t.h===fastest[o.id]?"fast":""}" style="background:${c.bg};color:${c.fg}" title="${o.name} → ${d.name}: about ${t.h} h by ${modesOf(d,o)}, €${t.cost[0]}–${t.cost[1]} return"><b>${t.h} h</b><span>${modesOf(d,o)}</span><span>€${t.cost[0]}–${t.cost[1]}</span></div></td>`;}).join("")
+    }<td class="avgc"><b>${avg.toFixed(1)} h</b><div class="avgbar" style="width:${Math.round(avg/maxAvg*100)}%"></div></td></tr>`).join("")}</tbody>`;
+  $("#heatkey").innerHTML=`<span class="ramp">${hMin} h ${[0,.25,.5,.75,1].map(t=>`<i style="background:color-mix(in srgb, var(--accent) ${Math.round(8+t*72)}%, var(--surface))"></i>`).join("")} ${hMax} h</span><span>★ fastest option from that city</span><span>Fares are return, per person, estimated for the holiday peak.</span>`;
 
   // housing
   $("#houses").innerHTML=active().map(d=>{const hr=d.house[state.period], key=d.id+state.period;return `
@@ -513,9 +565,13 @@ function render(){
         <dt>Minimum stay</dt><dd style="font-family:var(--body)">${d.house.min}</dd>
       </dl>
       <label class="quote" for="q-${key}">Your best quote, total € <input type="number" min="0" step="10" id="q-${key}" data-q="${key}" value="${state.quote[key]||""}" placeholder="e.g. 3200"></label>
-      <ul>${d.house.tips.map(t=>`<li>${t}</li>`).join("")}</ul>
-      <div class="eyebrow">Search with 4+ bedrooms, your dates</div>
-      <div class="linkrow">${searchLinks(d).concat(d.house.local).map(l=>`<a href="${l[1]}" target="_blank" rel="noopener">${l[0]}</a>`).join("")}</div>
+      <div class="eyebrow">Three houses to check</div>
+      <ul class="picks">${d.house.picks.map(k=>`<li><a href="${withDates(k.u)}" target="_blank" rel="noopener">${k.n}</a><span>${k.what}</span>${k.price?`<span class="pm">${k.price}</span>`:""}${k.warn?`<span class="warnline">${k.warn}</span>`:""}</li>`).join("")}</ul>
+      <ul class="tips">${d.house.tips.map(t=>`<li>${t}</li>`).join("")}</ul>
+      <div class="eyebrow">Search more: 4+ bedrooms, ${dshort(p.in)} – ${dshort(p.out)}</div>
+      <div class="linkrow">${searchLinks(d).map(l=>`<a href="${l[1]}" target="_blank" rel="noopener">${l[0]} ↗</a>`).join("")}</div>
+      <div class="eyebrow">Local sites (set the dates there)</div>
+      <div class="linkrow">${d.house.local.map(l=>`<a href="${l[1]}" target="_blank" rel="noopener">${l[0]}</a>`).join("")}</div>
     </article>`;}).join("");
 
   $("#msg").value=`Hello,
@@ -611,11 +667,18 @@ function drawRoutes(){
   const hubMarks=[...hubs].map(h=>{const [x,y]=proj(h);return `<circle cx="${x}" cy="${y}" r="4.5" fill="var(--land)" stroke="var(--ink)" stroke-width="1.5"/><text class="map-lbl sm" x="${x+7}" y="${y-7}">${HUBNAME[h]}</text>`;}).join("");
   $("#routemap").setAttribute("viewBox",`0 0 ${MAPGEO.W} ${MAPGEO.H}`);
   $("#routemap").innerHTML=base()+legs+hubMarks+ORIGINS.map(origin).join("")+flag(d,dx,dy,1.3)+destLabel(d);
-  $("#routecards").innerHTML=ORIGINS.map(o=>{const t=d.travel[o.id], steps=ROUTES[d.id][o.id].split(",").map(s=>s.trim().split(" ")[1]);
-    return `<div class="rc" style="--oc:var(${OCOL[o.id]})"><strong>${o.name} → ${d.name}</strong><span class="num">≈${t.h} h · €${t.cost[0]}–${t.cost[1]} return · ${steps.length} leg${steps.length>1?"s":""} (${steps.map(m=>MODE[m]).join(" + ")})</span></div>`;}).join("");
+  const p=P();
+  $("#routecards").innerHTML=ORIGINS.map(o=>{const t=d.travel[o.id];
+    const legsHtml=ROUTES[d.id][o.id].split(",").map(seg=>{ const [ab,m]=seg.trim().split(" "), [a,b]=ab.split(">");
+      const from=HUBNAME[a]||(ORIGINS.find(x=>x.id===a)||{}).name||a, to=HUBNAME[b]||(ORIGINS.find(x=>x.id===b)||{}).name||(b===d.id?d.name:b);
+      const links = m==="f" ? `<a href="${flightLeg(a,b)}" target="_blank" rel="noopener">Flights ${dshort(p.in)} ⇄ ${dshort(p.out)} ↗</a>`
+        : `<a href="${scotty(a,b,p.in)}" target="_blank" rel="noopener">Out ${dshort(p.in)} ↗</a><a href="${scotty(b,a,p.out)}" target="_blank" rel="noopener">Back ${dshort(p.out)} ↗</a>`;
+      return `<li><span class="mode">${MODE[m]}</span><span>${from} → ${to}<br>${links}</span></li>`; }).join("");
+    return `<div class="rc" style="--oc:var(${OCOL[o.id]})"><strong>${o.name} → ${d.name}</strong><span class="num">≈${t.h} h one way · €${t.cost[0]}–${t.cost[1]} return</span><ol class="legs">${legsHtml}</ol><p class="desc">${t.route}</p></div>`;}).join("");
+  document.querySelectorAll("#heat tbody tr").forEach(tr=>tr.classList.toggle("sel",tr.dataset.r===routeSel));
 }
-document.addEventListener("click",e=>{ const r=e.target.closest("[data-r]"); if(r){routeSel=r.dataset.r;drawRoutes();}
-  const m=e.target.closest("[data-d-map]"); if(m){routeSel=m.getAttribute("data-d-map");drawRoutes();document.getElementById("h-travel").scrollIntoView({behavior:"smooth",block:"start"});} });
+document.addEventListener("click",e=>{ const r=e.target.closest("[data-r]"); if(r){routeSel=r.dataset.r;drawRoutes(); if(r.tagName==="TR") document.getElementById("h-routes").scrollIntoView({behavior:"smooth",block:"start"});}
+  const m=e.target.closest("[data-d-map]"); if(m){routeSel=m.getAttribute("data-d-map");drawRoutes();document.getElementById("h-routes").scrollIntoView({behavior:"smooth",block:"start"});} });
 document.addEventListener("keydown",e=>{ const m=e.target.closest&&e.target.closest("[data-d-map]"); if(m&&(e.key==="Enter"||e.key===" ")){e.preventDefault();m.dispatchEvent(new MouseEvent("click",{bubbles:true}));} });
 
 const _render=render; render=function(){_render();drawOverview();drawRoutes();};
