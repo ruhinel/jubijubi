@@ -177,7 +177,7 @@ table.heat tbody tr.sel th{box-shadow:inset 4px 0 0 var(--c)}
 .spendctl{display:flex;flex-wrap:wrap;gap:8px 12px}
 .spendctl label{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-weight:500;font-size:14px}
 .spendctl .chk input{accent-color:var(--accent);width:16px;height:16px}
-table.spend{min-width:820px}
+table.spend{min-width:1080px}
 table.spend td,table.spend th{min-width:0;padding:10px 12px}
 table.spend thead th{font:600 12px var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--surface-2);text-align:right}
 table.spend thead th:first-child{text-align:left}
@@ -277,16 +277,19 @@ table.spend tbody th small{display:block;font:400 12px var(--body);color:var(--m
 <section aria-labelledby="h-spend">
   <div class="sechead">
     <h2 id="h-spend">Spending on the spot</h2>
-    <p class="muted">Typical resort prices per person in euros, winter 2026/27 estimates. Groceries are for a self-catering day (breakfast, snacks and one home-cooked meal). Set your plan and the totals update, including the ranking.</p>
+    <p class="muted">Typical resort prices per person in euros, winter 2026/27 estimates. Rentals are counted for each ski day, at standard adult level. Groceries are for a self-catering day (breakfast, snacks and one home-cooked meal). Set your plan and the totals update, including the ranking.</p>
   </div>
   <div class="spendctl" role="group" aria-label="Spending plan">
     <label for="sp-din">Restaurant dinners <input type="number" min="0" max="10" id="sp-din" data-sp="din"></label>
     <label for="sp-lun">Lunches out (slopes or town) <input type="number" min="0" max="10" id="sp-lun" data-sp="lun"></label>
     <label for="sp-ski">Ski days <input type="number" min="0" max="10" id="sp-ski" data-sp="ski"></label>
+    <label for="sp-rk" class="chk"><input type="checkbox" id="sp-rk" data-sp="rk"> Rent skis, boots, poles</label>
+    <label for="sp-hel" class="chk"><input type="checkbox" id="sp-hel" data-sp="hel"> Rent helmet</label>
+    <label for="sp-out" class="chk"><input type="checkbox" id="sp-out" data-sp="out"> Rent jacket + trousers</label>
     <label for="sp-inc" class="chk"><input type="checkbox" id="sp-inc" data-sp="inc"> Count in the ranking</label>
   </div>
   <div class="tablebox"><table class="spend" id="spend"></table></div>
-  <p class="note">Green marks the cheapest destination in each column. Prices come from national cost-of-living averages (Numbeo, 2026) with a resort mark-up, and from published 2025/26 day-pass prices. Poland, Czechia and Romania use their own currencies, and cards are accepted almost everywhere; carry some cash for mountain huts.</p>
+  <p class="note">Green marks the cheapest destination in each column. Prices come from national cost-of-living averages (Numbeo, 2026) with a resort mark-up, and from published 2025/26 day-pass prices. Rental prices are walk-in rates for standard equipment; booking online with Skiset, Intersport or Hervis usually saves 20–40%, and a week often costs 6 days. Ski clothing is rented mostly in the larger shops, so reserve it ahead. Poland, Czechia and Romania use their own currencies, and cards are accepted almost everywhere; carry some cash for mountain huts.</p>
 </section>
 
 <section class="two" aria-label="Beds and practical notes">
@@ -376,7 +379,7 @@ const ORIGINS = [
   {id:"KIV", name:"Chișinău", air:"RMO"}
 ];
 const DESTS = [
-  {id:"zak", name:"Zakopane", spend:{"g": 9, "r": 18, "l": 14, "beer": 4, "cof": 3.5, "ski": 50, "cur": "PLN (złoty)", "note": "Kasprowy Wierch 200–300 PLN a day; Tatry Super Ski covers Białka too."}, country:"Poland · Tatras · 838 m, lifts to 1,987 m", c:"--t-red", air:"KRK", q:"Zakopane, Poland",
+  {id:"zak", name:"Zakopane", spend:{"rk":19,"hel":4,"out":12,"g": 9, "r": 18, "l": 14, "beer": 4, "cof": 3.5, "ski": 50, "cur": "PLN (złoty)", "note": "Kasprowy Wierch 200–300 PLN a day; Tatry Super Ski covers Białka too."}, country:"Poland · Tatras · 838 m, lifts to 1,987 m", c:"--t-red", air:"KRK", q:"Zakopane, Poland",
    scores:{snow:3, carfree:4, ski:3, quiet:1},
    tags:[["Biggest New Year party","good"],["Very crowded","warn"],["Cheapest housing","good"]],
    house:{picks:[{"n": "Willa Uroczysko, Kościelisko", "u": "https://willauroczysko.pl/", "what": "Historic wooden villa rented whole: 4 closed bedrooms, 3 bathrooms, sauna, Tatra views. Up to 10 guests.", "warn": "The listing mentions 1 sofa among the sleeping places: confirm 8 people sleep in beds."}, {"n": "Sopa Zakopane", "u": "https://zakopanedomki.com/domki-4-i-wiecej-sypialni.html", "what": "Góral-style house for up to 10 with sauna, jacuzzi, garden and Tatra views. Listed among the 4+ bedroom houses."}, {"n": "New 4-bedroom house, Murzasichle", "u": "https://zakopanedomki.com/domki-w-gorach-sylwester-i-swieta.html", "what": "Built 2021: 4 bedrooms, 4 bathrooms, fireplace living room, rented whole for 8–16. Murzasichle is 15 min by bus from Zakopane.", "price": "Minimum 7 nights over New Year."}], A:[450,900],C:[270,560],B:[250,520], tax:1, min:"5–7 nights around New Year is common", local:[["Nocowanie.pl New Year","https://sylwester.nocowanie.pl/zakopane/"],["ZakopaneDomki","https://zakopanedomki.com/domki-w-gorach-sylwester-i-swieta.html"]],
@@ -387,7 +390,7 @@ const DESTS = [
      BER:{h:10, cost:[70,150], route:"Direct EuroCity Berlin → Kraków Główny (~7h; check whether it leaves from Gesundbrunnen or Hbf after the December timetable change), then 2h15 by bus or train.", links:[["Seat61 guide","https://www.seat61.com/trains-and-routes/berlin-to-krakow-by-train.htm"],["DB tickets","https://int.bahn.de/en"]]},
      KIV:{h:11, cost:[220,420], route:"LOT Chișinău → Warsaw (~1h50), then PKP Intercity direct Warszawa → Zakopane (~6h) or a short flight to Kraków and bus.", links:[["Flights","gf:RMO:WAW"],["PKP Intercity","https://www.intercity.pl/en/"]]}
    }},
-  {id:"tat", name:"High Tatras", spend:{"g": 10, "r": 18, "l": 15, "beer": 3.5, "cof": 3, "ski": 60, "cur": "EUR", "note": "Tatry Mountain Resorts prices change by day: from €27 online in advance, about €60 at the peak."}, country:"Slovakia · Starý Smokovec / T. Lomnica · 1,000 m, lifts to 2,190 m", c:"--t-blue", air:"BTS", q:"Starý Smokovec, Slovakia",
+  {id:"tat", name:"High Tatras", spend:{"rk":25,"hel":5,"out":12,"g": 10, "r": 18, "l": 15, "beer": 3.5, "cof": 3, "ski": 60, "cur": "EUR", "note": "Tatry Mountain Resorts prices change by day: from €27 online in advance, about €60 at the peak."}, country:"Slovakia · Starý Smokovec / T. Lomnica · 1,000 m, lifts to 2,190 m", c:"--t-blue", air:"BTS", q:"Starý Smokovec, Slovakia",
    scores:{snow:4, carfree:5, ski:4, quiet:4},
    tags:[["Electric mountain railway","good"],["Quiet, same peaks as Zakopane","good"],["Longer trip from France","warn"]],
    house:{picks:[{"n": "Chalets Royal, Tatranská Lomnica", "u": "https://www.readytotrip.com/hotels/Slovakia/Pre%C5%A1ovsk%C3%BD%20kraj/High%20Tatras/Star%C3%BD%20Smokovec/Vysok%C3%A9%20Tatry/Tatransk%C3%A1%20Lomnica/chalets-royal-tatranska-lomnica/", "what": "Whole chalet: 4 separate bedrooms, 5 bathrooms, living room. Up to 10 guests. Walk to the TEŽ stop and the Lomnica lifts."}, {"n": "Chalet Lomnica, Tatranská Lomnica", "u": "https://en.megaubytovanie.sk/stary-smokovec/cottages", "what": "5-star chalet for 10: five bedrooms, two bathrooms, whirlpool. One spare bedroom beyond your four."}, {"n": "4-bedroom house, Starý Smokovec", "u": "https://en.megaubytovanie.sk/stary-smokovec/cottages", "what": "Listed with 8 beds, 4 bedrooms and 4 bathrooms, plus extra beds you would not need. In the village with the TEŽ station.", "warn": "Unnamed in search results: pick it from the Starý Smokovec cottages list."}], A:[320,650],C:[220,450],B:[200,420], tax:2.5, min:"3–5 nights; New Year prices often ‘on request’", local:[["Hauzi.sk New Year chalets","https://www.hauzi.sk/vysoke-tatry/silvester"],["Hauzi.sk Starý Smokovec","https://www.hauzi.sk/chaty-chalupy/mesto-vysoke-tatry-stary-smokovec"]],
@@ -398,7 +401,7 @@ const DESTS = [
      BER:{h:13, cost:[90,200], route:"EuroCity Berlin → Prague (~4h30), then the night train Prague → Poprad-Tatry (~9h, couchette or sleeper). You wake up below the Tatras.", links:[["DB tickets","https://int.bahn.de/en"],["ČD night train","https://www.cd.cz/en/"],["RegioJet","https://regiojet.com/"]]},
      KIV:{h:10, cost:[160,340], route:"Wizz Air Chișinău → Bratislava (direct), then train Bratislava → Poprad-Tatry (~4h) and the TEŽ railway.", links:[["Flights","gf:RMO:BTS"],["Slovak trains (ZSSK)","https://www.zssk.sk/en/"]]}
    }},
-  {id:"sin", name:"Sinaia / Bușteni", spend:{"g": 9, "r": 16, "l": 13, "beer": 3.5, "cof": 3, "ski": 45, "cur": "RON (leu)", "note": "Sinaia gondola to Cota 2000; cash still common in cabins."}, country:"Romania · Bucegi · 800–900 m, lifts to 2,000 m", c:"--t-green", air:"OTP", q:"Sinaia, Romania",
+  {id:"sin", name:"Sinaia / Bușteni", spend:{"rk":15,"hel":3,"out":10,"g": 9, "r": 16, "l": 13, "beer": 3.5, "cof": 3, "ski": 45, "cur": "RON (leu)", "note": "Sinaia gondola to Cota 2000; cash still common in cabins."}, country:"Romania · Bucegi · 800–900 m, lifts to 2,000 m", c:"--t-green", air:"OTP", q:"Sinaia, Romania",
    scores:{snow:3, carfree:4, ski:3, quiet:2},
    tags:[["Best for Chișinău","good"],["Direct flights from all western cities","good"],["Busy with Bucharest crowds","warn"]],
    house:{picks:[{"n": "Alpine Bliss, Sinaia", "u": "https://www.turistinfo.ro/sinaia/revelion-sinaia.html", "what": "Rented whole: four double bedrooms, up to 10 adults.", "price": "New Year: 3,000 RON (≈€600) per night, minimum 3 nights."}, {"n": "Casa Zoma, Sinaia", "u": "https://www.turistinfo.ro/sinaia/cazare-hoteluri-vile-pensiuni-sinaia.html", "what": "4 double rooms for 8–12 people, with a barbecue room. Aimed at groups."}, {"n": "Vila Gabi, Bușteni", "u": "https://www.turistinfo.ro/busteni/revelion-busteni.html", "what": "Four spacious bedrooms with living room and kitchen, rented whole. Bușteni station is one stop after Sinaia."}], A:[450,1000],C:[250,500],B:[200,420], tax:0.5, min:"3–4 nights over ‘Revelion’, often with gala dinner", local:[["Turistinfo Revelion Bușteni","https://www.turistinfo.ro/busteni/revelion-busteni.html"],["Turistinfo Revelion Sinaia","https://www.turistinfo.ro/sinaia/revelion-sinaia.html"],["Carta.ro Sinaia","https://carta.ro/revelion-sinaia/"]],
@@ -409,7 +412,7 @@ const DESTS = [
      BER:{h:8, cost:[150,340], route:"Fly Berlin → Bucharest direct (~2h15), then airport train and CFR train to Sinaia.", links:[["Flights","gf:BER:OTP"],["CFR tickets","https://bilete.cfrcalatori.ro/en-GB"]]},
      KIV:{h:16, cost:[60,130], route:"‘Prietenia’ sleeper train: Chișinău 16:50 → București Nord 06:38 (1-, 2- and 4-berth cabins), then a morning train to Sinaia. The long time is mostly spent asleep. A 1h flight to Otopeni is the fast alternative.", links:[["Seat61 guide","https://www.seat61.com/trains-and-routes/bucharest-to-chisinau-by-train.htm"],["Flights","gf:RMO:OTP"]]}
    }},
-  {id:"dol", name:"San Candido", spend:{"g": 15, "r": 30, "l": 22, "beer": 6, "cof": 2, "ski": 77, "cur": "EUR", "note": "Dolomiti Superski / 3 Zinnen peak day pass; espresso at the bar is cheap."}, country:"Italy · Dolomites, Alta Pusteria · 1,175 m, lifts to 2,200 m", c:"--t-yellow", air:"VCE", q:"San Candido, Italy",
+  {id:"dol", name:"San Candido", spend:{"rk":35,"hel":7,"out":16,"g": 15, "r": 30, "l": 22, "beer": 6, "cof": 2, "ski": 77, "cur": "EUR", "note": "Dolomiti Superski / 3 Zinnen peak day pass; espresso at the bar is cheap."}, country:"Italy · Dolomites, Alta Pusteria · 1,175 m, lifts to 2,200 m", c:"--t-yellow", air:"VCE", q:"San Candido, Italy",
    scores:{snow:5, carfree:5, ski:5, quiet:4},
    tags:[["Train station in town","good"],["Dolomiti Superski","good"],["Most expensive","bad"]],
    house:{picks:[{"n": "Residence San Candido (2 apartments)", "u": "https://www.suedtirol.info/en/en/accommodation/pdp-accommodation.3062D1C6A417C985FB621A2C0B869D5E.residence-san-candido--innichen.s--candido-innichen", "what": "Eight apartments of 55–80 m² in the pedestrian centre, each with at least 2 bedrooms. Book two side by side for 4 bedrooms. 5 min walk to the station."}, {"n": "Panoramic chalet near Toblach/Dobbiaco", "u": "https://www.alpen-chalets.de/hochpustertal", "what": "Modern chalet for up to 14 above Dobbiaco, one train stop from San Candido.", "warn": "Check how far it is from the bus stop."}, {"n": "Chalet Comici, Croda Rossa slope", "u": "https://www.bookingsuedtirol.com/innichensancandido/ferienwohnung", "what": "Ski-in/ski-out on the Croda Rossa run, private spa with sauna and hot tub. Sleeps 8.", "warn": "Only 3 en-suite bedrooms: works only if 2 people share one."}], A:[750,1500],C:[600,1200],B:[550,1100], tax:4, min:"7 nights common over Christmas–Epiphany", local:[["Booking Südtirol San Candido","https://www.bookingsuedtirol.com/innichensancandido/ferienwohnung"],["Südtirol.info stays","https://www.suedtirol.info/en/en/accommodations/plp/tvs/innichen---san-candido"]],
@@ -420,7 +423,7 @@ const DESTS = [
      BER:{h:10.5, cost:[130,280], route:"ICE Berlin → Munich (~4h), then train to San Candido (~5–6h). Or fly Berlin → Venice and take the Cortina Express and bus 445.", links:[["DB tickets","https://int.bahn.de/en"],["Flights","gf:BER:VCE"]]},
      KIV:{h:9, cost:[160,340], route:"Wizz Air Chișinău → Venice (direct), then Cortina Express and bus 445. Alternative: Wizz to Bergamo and train via Verona, Bolzano and Fortezza (~5h).", links:[["Flights","gf:RMO:VCE"],["Cortina Express","https://www.cortinaexpress.it/en/"]]}
    }},
-  {id:"obe", name:"Oberstdorf", spend:{"g": 14, "r": 28, "l": 20, "beer": 5.5, "cof": 3.8, "ski": 62, "cur": "EUR", "note": "Fellhorn/Kanzelwand day pass; the guest card gives free ski buses."}, short:true, country:"Germany · Allgäu Alps · 815 m, lifts to 2,224 m", c:"--t-orange", air:"FMM", q:"Oberstdorf, Germany",
+  {id:"obe", name:"Oberstdorf", spend:{"rk":30,"hel":6,"out":15,"g": 14, "r": 28, "l": 20, "beer": 5.5, "cof": 3.8, "ski": 62, "cur": "EUR", "note": "Fellhorn/Kanzelwand day pass; the guest card gives free ski buses."}, short:true, country:"Germany · Allgäu Alps · 815 m, lifts to 2,224 m", c:"--t-orange", air:"FMM", q:"Oberstdorf, Germany",
    scores:{snow:3, carfree:5, ski:3, quiet:3},
    tags:[["Shortest average journey","good"],["Train all the way from France","good"],["Chișinău flight 3×/week","warn"]],
    house:{picks:[{"n": "Das Ferienhaus Oberstdorf", "u": "https://www.oberstdorf.de/partner/das-ferienhaus-oberstdorf.html", "what": "170 m², 4 bedrooms plus a children's room, 2 bathrooms, sauna, winter garden facing the ski jumps. A few minutes' walk from the station. 2–10 guests."}, {"n": "Charming house, Oberstdorf-Reichenbach", "u": "https://www.fewo-direkt.de/ferienwohnung-ferienhaus/p5519382", "what": "4 bedrooms, 8 beds, 2 bathrooms, sauna. Ski-bus stop 50 m away. Max. 8 guests."}, {"n": "Ferienhaus Iris", "u": "https://ferienhaus-iris.de/", "what": "4 bedrooms, fireplace, south terrace, 5 min walk from the station.", "warn": "Licensed for 7: ask whether 8 is possible."}], A:[400,800],C:[320,650],B:[300,600], tax:3.5, min:"3–7 nights; houses with 4 bedrooms are fewer than apartments", local:[["Oberstdorf tourism","https://www.oberstdorf.de/"]],
@@ -431,7 +434,7 @@ const DESTS = [
      BER:{h:7, cost:[100,220], route:"ICE Berlin → Augsburg or Munich (~4h–4h30), then regional train to Oberstdorf via Kempten (~2h–2h30).", links:[["DB tickets","https://int.bahn.de/en"]]},
      KIV:{h:6, cost:[100,260], route:"Wizz Air Chișinău → Memmingen (~2h30, about 3 flights a week: check your dates are flight days), then hourly train from Memmingen (~1h20) or FlixBus from the airport (~1h40). Backup: Austrian via Vienna or Munich.", links:[["Flights","gf:RMO:FMM"],["DB tickets","https://int.bahn.de/en"]]}
    }},
-  {id:"krk", name:"Krkonoše", spend:{"g": 10, "r": 15, "l": 12, "beer": 2.8, "cof": 3, "ski": 67, "cur": "CZK (koruna)", "note": "Špindlerův Mlýn is Czechia's priciest lift pass: 1,690 CZK at the desk, from about 820 CZK online in advance."}, short:true, country:"Czechia · Špindlerův Mlýn · 715 m, lifts to 1,310 m", c:"--t-purple", air:"PRG", q:"Špindlerův Mlýn, Czechia",
+  {id:"krk", name:"Krkonoše", spend:{"rk":20,"hel":4,"out":10,"g": 10, "r": 15, "l": 12, "beer": 2.8, "cof": 3, "ski": 67, "cur": "CZK (koruna)", "note": "Špindlerův Mlýn is Czechia's priciest lift pass: 1,690 CZK at the desk, from about 820 CZK online in advance."}, short:true, country:"Czechia · Špindlerův Mlýn · 715 m, lifts to 1,310 m", c:"--t-purple", air:"PRG", q:"Špindlerův Mlýn, Czechia",
    scores:{snow:3, carfree:4, ski:3, quiet:3},
    tags:[["Prague: direct from every city","good"],["Low prices","good"],["Lower mountains","warn"]],
    house:{picks:[{"n": "Chata Špindlerův Mlýn (Region Krkonoše)", "u": "https://www.region-krkonose.cz/ubytovani/spindleruv-mlyn/chata-spindleruv-mlyn/", "what": "A few minutes' walk from the centre. Four double bedrooms among its seven rooms (up to 19): your group would use the doubles."}, {"n": "Chalupa Dias, Svatý Petr", "u": "https://www.e-chalupy.cz/krkonose/spindleruv_mlyn_ubytovani_chata_pronajmuti_dias_0424.php", "what": "Cottage next to the Svatý Petr ski area, 5 bedrooms, rented whole (13–22 people).", "warn": "Priced for large groups: ask for a price for 8."}, {"n": "New-built 4-bedroom chalupa", "u": "https://silvestr.e-chalupy.cz/krkonose/", "what": "Listed for New Year near Špindlerův Mlýn: 4 bedrooms, rented whole.", "warn": "Capacity 16 in 4 rooms means extra beds per room: ask for the bed list."}], A:[300,600],C:[200,420],B:[180,380], tax:1, min:"New Year stays of 5–7 nights are common for whole ‘chalupy’", local:[["e-chalupy.cz Krkonoše","https://www.e-chalupy.cz/krkonose"],["Hauzi.cz","https://www.hauzi.cz/"]],
@@ -442,7 +445,7 @@ const DESTS = [
      BER:{h:7, cost:[60,140], route:"EuroCity Berlin → Praha hl.n. (~4h30), metro to Černý Most, then bus to Špindlerův Mlýn (~2h30).", links:[["DB tickets","https://int.bahn.de/en"],["Buses (IDOS)","https://idos.cz/en/"]]},
      KIV:{h:6.5, cost:[150,320], route:"Wizz Air or FlyOne Chișinău → Prague (~2h15, several flights a week), then direct bus (~2h30).", links:[["Flights","gf:RMO:PRG"],["Buses (IDOS)","https://idos.cz/en/"]]}
    }},
-  {id:"gas", name:"Bad Gastein", spend:{"g": 15, "r": 30, "l": 22, "beer": 5.8, "cof": 4.2, "ski": 74, "cur": "EUR", "note": "Ski amadé / Skigastein peak day pass."}, short:true, country:"Austria · Gastein valley · 1,000 m, lifts to 2,686 m", c:"--t-black", air:"MUC", q:"Bad Gastein, Austria",
+  {id:"gas", name:"Bad Gastein", spend:{"rk":38,"hel":8,"out":18,"g": 15, "r": 30, "l": 22, "beer": 5.8, "cof": 4.2, "ski": 74, "cur": "EUR", "note": "Ski amadé / Skigastein peak day pass."}, short:true, country:"Austria · Gastein valley · 1,000 m, lifts to 2,686 m", c:"--t-black", air:"MUC", q:"Bad Gastein, Austria",
    scores:{snow:4, carfree:5, ski:5, quiet:3},
    tags:[["Direct EC from Munich","good"],["Big ski area, good snow","good"],["Sat–Sat stays common","warn"]],
    house:{picks:[{"n": "Chalet Angertal, Bad Hofgastein", "u": "https://www.e-domizil.de/ferienhaus/2214826/chalet-angertal-bad-hofgastein-bad-hofgastein-gasteinertal-pongau-oesterreich/", "what": "Detached chalet for up to 10: 4 bedrooms each with its own bathroom, sauna and wellness area. Near the Angertal lifts."}, {"n": "Chalet Pflaume (Interhome), Bad Gastein", "u": "https://www.interhome.com/austria/gastein-valley/bad-gastein/", "what": "135 m², 4 bedrooms, 3 bathrooms, infrared sauna. Up to 10 guests."}, {"n": "Chalet near the slopes, Bad Hofgastein (Belvilla)", "u": "https://www.belvilla.de/at/100015219/", "what": "160 m² chalet with 4 bedrooms for 10 guests near the Schlossalm lifts."}], A:[550,1100],C:[450,900],B:[400,850], tax:2.5, min:"7 nights, often Saturday to Saturday, over New Year", local:[["Gastein tourism","https://www.gastein.com/en/"]],
@@ -453,7 +456,7 @@ const DESTS = [
      BER:{h:7.5, cost:[120,250], route:"ICE Berlin → Munich (~4h), then direct EC to Bad Gastein (~3h).", links:[["DB tickets","https://int.bahn.de/en"]]},
      KIV:{h:8, cost:[180,360], route:"Austrian Airlines Chișinău → Vienna (~1h40, twice daily), then train Vienna → Bad Gastein (~4h, 1 change).", links:[["Flights","gf:RMO:VIE"],["ÖBB","https://www.oebb.at/en/"]]}
    }},
-  {id:"aur", name:"Auron / Isola 2000", spend:{"g": 16, "r": 30, "l": 22, "beer": 7, "cof": 3, "ski": 44, "cur": "EUR", "note": "Auron day pass €44; resort supermarkets cost more than in Nice, so shop before the bus."}, short:true, fr:true, country:"France · Alpes-Maritimes · 1,600 m, lifts to 2,450 m", c:"--t-teal", air:"NCE", q:"Auron, France",
+  {id:"aur", name:"Auron / Isola 2000", spend:{"rk":25,"hel":5,"out":14,"g": 16, "r": 30, "l": 22, "beer": 7, "cof": 3, "ski": 44, "cur": "EUR", "note": "Auron day pass €44; resort supermarkets cost more than in Nice, so shop before the bus."}, short:true, fr:true, country:"France · Alpes-Maritimes · 1,600 m, lifts to 2,450 m", c:"--t-teal", air:"NCE", q:"Auron, France",
    scores:{snow:3, carfree:4, ski:4, quiet:3},
    tags:[["Direct flights to Nice from all 4 cities","good"],["€1.50 bus from the airport","good"],["Only 2 buses a day","warn"]],
    house:{picks:[{"n": "Chalet Familial Auron", "u": "https://www.booking.com/hotel/fr/chalet-familial-auron.html", "what": "Whole chalet: 4 bedrooms, 2 bathrooms, 8 people, patio with slope views."}, {"n": "Luxury chalet ref. AU7 (Alexandra Lloyd)", "u": "https://www.alexandra-lloyd.com/fr/form_locations.php?reference=AU7", "what": "180 m² chalet with 4 bedrooms in Auron, through a local agency."}, {"n": "Chalet La Grange, Auron", "u": "https://www.cozycozy.com/us/auron-chalet", "what": "4 bedrooms, 3 bathrooms, 140 m² for up to 8, private sauna and garden."}], A:[500,1000],C:[350,700],B:[250,550], tax:2, min:"Saturday to Saturday is the norm; 2 Jan is a Saturday", local:[["Auron resort","https://www.auron.com/"],["Isola 2000 resort","https://isola2000.com/en/"]],
@@ -464,7 +467,7 @@ const DESTS = [
      BER:{h:6, cost:[140,300], route:"easyJet or Eurowings Berlin → Nice (~2h, daily), then the airport bus.", links:[["Flights","gf:BER:NCE"],["Lignes d'Azur ski buses","https://www.lignesdazur.com/"]]},
      KIV:{h:6.5, cost:[150,330], route:"Wizz Air Chișinău → Nice (direct), then the airport bus.", links:[["Flights","gf:RMO:NCE"],["Lignes d'Azur ski buses","https://www.lignesdazur.com/"]]}
    }},
-  {id:"cha", name:"Chamonix", spend:{"g": 18, "r": 35, "l": 26, "beer": 8, "cof": 3.5, "ski": 75, "cur": "EUR", "note": "Mont Blanc Unlimited costs more; valley supermarkets are reasonable."}, short:true, fr:true, country:"France · Mont Blanc · 1,035 m, lifts to 3,842 m", c:"--t-pink", air:"GVA", q:"Chamonix-Mont-Blanc, France",
+  {id:"cha", name:"Chamonix", spend:{"rk":35,"hel":7,"out":16,"g": 18, "r": 35, "l": 26, "beer": 8, "cof": 3.5, "ski": 75, "cur": "EUR", "note": "Mont Blanc Unlimited costs more; valley supermarkets are reasonable."}, short:true, fr:true, country:"France · Mont Blanc · 1,035 m, lifts to 3,842 m", c:"--t-pink", air:"GVA", q:"Chamonix-Mont-Blanc, France",
    scores:{snow:4, carfree:5, ski:5, quiet:2},
    tags:[["Train or 1h15 bus from Geneva","good"],["Mid-week arrivals easier","good"],["Expensive, busy","bad"]],
    house:{picks:[{"n": "Chalet Couttet, Chamonix centre", "u": "https://www.vrbo.com/10764209ha", "what": "Self-catered chalet: 4 bedrooms for 8, sunny terrace, log fire, Mont Blanc views, walk to the town centre."}, {"n": "Chalet Shanti", "u": "https://chamonixallyear.com/chamonix-chalets/4-bedroom-self-catered-chalets/", "what": "Self-catered, 4 bedrooms, 3 bathrooms, sleeps 8."}, {"n": "Pic Vert (Marmotte Mountain), Argentière", "u": "https://chamonixallyear.com/chamonix-chalets/4-bedroom-self-catered-chalets/", "what": "4-bedroom chalet in the old village of Argentière, next to the Grands Montets and on the Mont-Blanc Express line."}], A:[900,1800],C:[650,1300],B:[500,1000], tax:3, min:"5–7 nights over New Year; as a year-round town, mid-week arrivals are easier than in purpose-built resorts", local:[["Chamonix tourism","https://www.chamonix.com/"]],
@@ -475,7 +478,7 @@ const DESTS = [
      BER:{h:5.5, cost:[140,320], route:"easyJet Berlin → Geneva (~1h35), then the airport bus to Chamonix (~1h15).", links:[["Flights","gf:BER:GVA"],["Chamonix transfers","https://en.chamonix.com/taxis-shuttles-and-vtc"]]},
      KIV:{h:8, cost:[180,380], route:"Direct Chișinău → Geneva flights (FlyOne, Wizz) run on some schedules: check your dates. Otherwise connect via Vienna or Munich to Geneva, or Wizz to Paris Beauvais and TGV.", links:[["Flights","gf:RMO:GVA"]]}
    }},
-  {id:"arc", name:"Les Arcs", spend:{"g": 18, "r": 33, "l": 25, "beer": 8, "cof": 3.5, "ski": 72, "cur": "EUR", "note": "Les Arcs day pass; Paradiski (with La Plagne) costs more."}, short:false, fr:true, country:"France · Tarentaise · 1,600–2,000 m, lifts to 3,226 m", c:"--t-brown", air:"GVA", q:"Les Arcs, Bourg-Saint-Maurice, France",
+  {id:"arc", name:"Les Arcs", spend:{"rk":32,"hel":6,"out":16,"g": 18, "r": 33, "l": 25, "beer": 8, "cof": 3.5, "ski": 72, "cur": "EUR", "note": "Les Arcs day pass; Paradiski (with La Plagne) costs more."}, short:false, fr:true, country:"France · Tarentaise · 1,600–2,000 m, lifts to 3,226 m", c:"--t-brown", air:"GVA", q:"Les Arcs, Bourg-Saint-Maurice, France",
    scores:{snow:5, carfree:5, ski:5, quiet:3},
    tags:[["Funicular from the station","good"],["Huge ski area (Paradiski)","good"],["Far for Berlin and Chișinău","warn"]],
    house:{picks:[{"n": "Chalet Ponturin, Peisey-Vallandry", "u": "https://www.madamevacances.com/locations/france/alpes-du-nord/les-arcs-peisey-vallandry/", "what": "111 m² duplex with 4 bedrooms, each with its own bathroom, for 8–10. Take the train to Landry, then the shuttle bus up (≈20 min)."}, {"n": "Chalet Dahu, Plan-Peisey", "u": "https://www.location-chalet-peisey-vallandry.com/fr/", "what": "4 bedrooms for 10, 100 m from the Parchey lift in the Paradiski area.", "warn": "Two rooms sleep 3: check they are single beds, not bunks."}, {"n": "Chalet Pierra Menta, Plan-Peisey", "u": "https://www.chalet-savoie.com/en/winter-arcs-2/", "what": "Chalet for 8–10 in the upper part of Plan-Peisey.", "price": "Similar 4-bedroom chalets list at €1,590–8,182 per week depending on the week."}], A:[800,1600],C:[550,1100],B:[400,850], tax:2.5, min:"Saturday to Saturday almost everywhere; 2 Jan is a Saturday", local:[["Les Arcs by train","https://www.lesarcs.com/en/funicular"]],
@@ -496,7 +499,7 @@ const WEIGHTS = [
   {id:"quiet", label:"Calm, few crowds", def:1}
 ];
 
-const state = {period:"A", pax:{PAR:2,SXB:2,BER:2,KIV:2}, w:{}, quote:{}, off:{}, unarch:{}, sp:{din:2,lun:3,ski:3,inc:true}};
+const state = {period:"A", pax:{PAR:2,SXB:2,BER:2,KIV:2}, w:{}, quote:{}, off:{}, unarch:{}, sp:{din:2,lun:3,ski:3,inc:true,rk:true,hel:true,out:false}};
 WEIGHTS.forEach(w=>state.w[w.id]=w.def);
 try{ const s=JSON.parse(localStorage.getItem("wsp-state")||"null"); if(s){Object.assign(state.pax,s.pax||{});Object.assign(state.w,s.w||{});state.quote=s.quote||{};state.off=s.off||{};state.unarch=s.unarch||{};if(s.sp)Object.assign(state.sp,s.sp);if(PERIODS[s.period])state.period=s.period;} }catch(e){}
 function save(){ try{localStorage.setItem("wsp-state",JSON.stringify(state));}catch(e){} }
@@ -539,7 +542,7 @@ function calc(d){
   let tLow=0,tHigh=0,hours=0;
   ORIGINS.forEach(o=>{ const n=+state.pax[o.id]||0, t=d.travel[o.id]; tLow+=n*t.cost[0]; tHigh+=n*t.cost[1]; hours+=n*t.h; });
   const tp=totalPax()||1;
-  const sp=d.spend, onsite=sp.g*p.nights + sp.r*state.sp.din + sp.l*state.sp.lun + sp.ski*state.sp.ski, ons=state.sp.inc?onsite:0;
+  const sp=d.spend, rent=state.sp.ski*((state.sp.rk?sp.rk:0)+(state.sp.hel?sp.hel:0)+(state.sp.out?sp.out:0)), onsite=sp.g*p.nights + sp.r*state.sp.din + sp.l*state.sp.lun + sp.ski*state.sp.ski + rent, ons=state.sp.inc?onsite:0;
   return {houseLow,houseHigh,tax,quote:!!quote,onsite,
     ppLow:(houseLow+tax)/pax + tLow/tp + ons, ppHigh:(houseHigh+tax)/pax + tHigh/tp + ons,
     housePP:((houseLow+houseHigh)/2+tax)/pax, travelPP:(tLow+tHigh)/2/tp, hours:hours/tp};
@@ -616,8 +619,8 @@ function render(){
     </article>`;}).join("");
 
   // spending table
-  ["din","lun","ski"].forEach(k=>{ const el=$("#sp-"+k); if(document.activeElement!==el) el.value=state.sp[k]; }); $("#sp-inc").checked=!!state.sp.inc;
-  const ad=active(), cols=[["g","Groceries / day"],["r","Restaurant main + drink"],["l","Lunch out"],["beer","Beer 0.5 L"],["cof","Coffee"],["ski","Ski day pass"]];
+  ["din","lun","ski"].forEach(k=>{ const el=$("#sp-"+k); if(document.activeElement!==el) el.value=state.sp[k]; }); ["inc","rk","hel","out"].forEach(k=>$("#sp-"+k).checked=!!state.sp[k]);
+  const ad=active(), cols=[["g","Groceries / day"],["r","Restaurant main + drink"],["l","Lunch out"],["beer","Beer 0.5 L"],["cof","Coffee"],["ski","Ski day pass"],["rk","Skis + boots + poles / day"],["hel","Helmet / day"],["out","Jacket + trousers / day"]];
   const mins={}; cols.forEach(([k])=>mins[k]=Math.min(...ad.map(d=>d.spend[k])));
   const tots=ad.map(d=>calc(d).onsite), minTot=Math.min(...tots);
   const fmtE=v=>"€"+(Number.isInteger(v)?v:v.toFixed(1));
@@ -650,7 +653,7 @@ document.addEventListener("input",e=>{
   const t=e.target;
   if(t.dataset.pax){state.pax[t.dataset.pax]=Math.max(0,+t.value||0);}
   else if(t.dataset.w){state.w[t.dataset.w]=+t.value;$("#wv-"+t.dataset.w).textContent=t.value;}
-  else if(t.dataset.sp){ const k=t.dataset.sp; state.sp[k]= k==="inc"? t.checked : Math.max(0,+t.value||0); }
+  else if(t.dataset.sp){ const k=t.dataset.sp; state.sp[k]= t.type==="checkbox"? t.checked : Math.max(0,+t.value||0); }
   else if(t.dataset.q){state.quote[t.dataset.q]=+t.value||0; save(); renderKeepFocus(t.id); return;}
   else return;
   save(); render();
