@@ -183,7 +183,7 @@ table.spend thead th{font:600 12px var(--body);text-transform:uppercase;letter-s
 table.spend thead th:first-child{text-align:left}
 table.spend td{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;background:var(--surface)}
 table.spend td.lo{color:var(--good);font-weight:600}
-table.spend td.tot{font-weight:700;font-size:15px}
+table.spend td.tot{font-weight:700;font-size:15px;background:var(--surface-2)}
 table.spend tbody th{background:var(--surface);white-space:nowrap}
 table.spend tbody th .dn{display:flex;align-items:center;gap:8px;font:700 15px var(--display);font-stretch:85%}
 table.spend tbody th .dn i{width:12px;height:12px;border-radius:2px;background:var(--c)}
@@ -626,8 +626,8 @@ function render(){
   const mins={}; cols.forEach(([k])=>mins[k]=Math.min(...ad.map(d=>d.spend[k])));
   const tots=ad.map(d=>calc(d).onsite), minTot=Math.min(...tots);
   const fmtE=v=>"€"+(Number.isInteger(v)?v:v.toFixed(1));
-  $("#spend").innerHTML=`<thead><tr><th scope="col">Destination</th>${cols.map(c=>`<th scope="col">${c[1]}</th>`).join("")}<th scope="col">Your plan, ${p.nights} nights</th></tr></thead><tbody>${
-    ad.map((d,i)=>`<tr style="--c:var(${d.c})"><th scope="row"><span class="dn"><i></i>${d.name}</span><small>${d.spend.cur}. ${d.spend.note}</small></th>${cols.map(([k])=>`<td class="${d.spend[k]===mins[k]?"lo":""}">${fmtE(d.spend[k])}</td>`).join("")}<td class="tot ${tots[i]===minTot?"lo":""}">${eur(tots[i])}</td></tr>`).join("")}</tbody>`;
+  $("#spend").innerHTML=`<thead><tr><th scope="col">Destination</th><th scope="col">Your plan, ${p.nights} nights, per person</th>${cols.map(c=>`<th scope="col">${c[1]}</th>`).join("")}</tr></thead><tbody>${
+    ad.map((d,i)=>`<tr style="--c:var(${d.c})"><th scope="row"><span class="dn"><i></i>${d.name}</span><small>${d.spend.cur}. ${d.spend.note}</small></th><td class="tot ${tots[i]===minTot?"lo":""}">${eur(tots[i])}</td>${cols.map(([k])=>`<td class="${d.spend[k]===mins[k]?"lo":""}">${fmtE(d.spend[k])}</td>`).join("")}</tr>`).join("")}</tbody>`;
 
   $("#msg").value=`Hello,
 
