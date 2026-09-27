@@ -125,6 +125,7 @@ tr:last-child td,tr:last-child th{border-bottom:0}
 .panel ul{margin:0;padding-left:18px;display:grid;gap:4px}
 textarea{width:100%;min-height:170px;font:13px/1.5 var(--mono);padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);color:var(--ink);resize:vertical}
 .btn{font:600 14px var(--body);background:var(--accent);color:var(--accent-ink);border:0;padding:9px 14px;border-radius:6px;cursor:pointer;justify-self:start}
+.linkbtn{font:inherit;background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;cursor:pointer}
 .note{font-size:13px;color:var(--muted);max-width:90ch}
 footer{font-size:13px;color:var(--muted);display:grid;gap:8px}
 footer ul{margin:0;padding-left:18px;columns:2 320px}
@@ -191,7 +192,7 @@ table.heat tbody tr.sel th{box-shadow:inset 4px 0 0 var(--c)}
   </div>
   <p class="eyebrow">New Year 2026/27 · car-free mountain trip</p>
   <h1>Winter Summit Planner</h1>
-  <p class="lede">Ten mountain bases reachable without a car, compared for a group travelling from Paris, Strasbourg, Berlin and Chișinău. Oberstdorf, Krkonoše and Bad Gastein sit between the four cities and cut the average journey by 2–4 hours; Auron, Chamonix and Les Arcs are the French Alps options. Choose the dates, say how many people come from each city, and weight what matters. Each destination carries a trail-blaze colour, as on Tatra and Carpathian hiking signs.</p>
+  <p class="lede">Seven mountain bases reachable without a car, compared for a group travelling from Paris, Strasbourg, Berlin and Chișinău. Oberstdorf, Krkonoše and Bad Gastein sit between the four cities and cut the average journey by 2–4 hours; Auron / Isola 2000 is the French Alps option. Chamonix, Les Arcs and Sinaia / Bușteni are archived and can be brought back below the ranking. Choose the dates, say how many people come from each city, and weight what matters. Each destination carries a trail-blaze colour, as on Tatra and Carpathian hiking signs.</p>
 </header>
 
 <div class="controls" role="group" aria-label="Trip settings">
@@ -217,6 +218,7 @@ table.heat tbody tr.sel th{box-shadow:inset 4px 0 0 var(--c)}
     <p class="muted">Cost is the midpoint of estimated travel + housing + tourist tax, per person. Enter a real quote under Housing and it replaces the estimate.</p>
   </div>
   <div class="seg" id="destpick" role="group" aria-label="Destinations to compare"></div>
+  <p class="note" id="archived"></p>
   <div class="rank" id="rank"></div>
 </section>
 
@@ -275,18 +277,18 @@ table.heat tbody tr.sel th{box-shadow:inset 4px 0 0 var(--c)}
 
 <section class="two" aria-label="Notes">
   <div class="panel">
-    <h3>Why these ten</h3>
+    <h3>Why these destinations</h3>
     <ul>
       <li><strong>Zakopane (PL)</strong>: the classic Tatra New Year, with the biggest party and the biggest crowds. Easiest from Paris and Berlin via Kraków.</li>
       <li><strong>High Tatras (SK)</strong>: the same mountains on the quieter Slovak side. The TEŽ electric railway links Poprad, Starý Smokovec, Tatranská Lomnica and Štrbské Pleso, so a car is never needed.</li>
-      <li><strong>Sinaia / Bușteni (RO)</strong>: Bucegi mountains on the Bucharest–Brașov main line. By far the easiest and cheapest for Chișinău, with a sleeper train straight to Bucharest.</li>
+      <li><strong>Sinaia / Bușteni (RO)</strong> <em>(archived)</em>: Bucegi mountains on the Bucharest–Brașov main line. By far the easiest and cheapest for Chișinău, with a sleeper train straight to Bucharest.</li>
       <li><strong>San Candido / Innichen (IT)</strong>, Alta Pusteria, Dolomites: a town with its own railway station, a ski slope at the edge of town, a gondola with its own train stop at Versciaco, and the Tre Cime area next door. The Dolomites benchmark, and the most expensive option.</li>
       <li><strong>Oberstdorf (DE)</strong>: shortest average journey. Train all the way from Paris, Strasbourg and Berlin, and Wizz Air flies Chișinău → Memmingen, 1h20 away by train.</li>
       <li><strong>Krkonoše (CZ)</strong>: Prague is reachable directly from every city (Berlin by train in 4h30), and cottage prices are close to Slovak levels. The mountains are lower, so snow is less certain.</li>
       <li><strong>Bad Gastein (AT)</strong>: one direct train from Munich for Paris, Strasbourg and Berlin; Chișinău flies to Vienna. Big ski area and thermal spas, at Alpine prices.</li>
       <li><strong>Auron / Isola 2000 (FR)</strong>: all four cities fly direct to Nice, and a €1.50 bus reaches the slopes in about 2h. Shortest average journey of all. Southern snow can vary.</li>
-      <li><strong>Chamonix (FR)</strong>: Geneva is a train from Strasbourg and a direct flight from Paris and Berlin. The most famous mountain, and the priciest housing.</li>
-      <li><strong>Les Arcs (FR)</strong>: best for Paris (direct TGV and a funicular to the slopes), but long for Berlin and Chișinău.</li>
+      <li><strong>Chamonix (FR)</strong> <em>(archived)</em>: Geneva is a train from Strasbourg and a direct flight from Paris and Berlin. The most famous mountain, and the priciest housing.</li>
+      <li><strong>Les Arcs (FR)</strong> <em>(archived)</em>: best for Paris (direct TGV and a funicular to the slopes), but long for Berlin and Chișinău.</li>
       <li><strong>Piešťany</strong> was suggested, but it is a spa town in the lowlands of western Slovakia at about 160 m, without real mountains. The High Tatras are the Slovak mountain choice.</li>
     </ul>
   </div>
@@ -463,16 +465,19 @@ const WEIGHTS = [
   {id:"quiet", label:"Calm, few crowds", def:1}
 ];
 
-const state = {period:"A", pax:{PAR:2,SXB:2,BER:2,KIV:2}, w:{}, quote:{}, off:{}};
+const state = {period:"A", pax:{PAR:2,SXB:2,BER:2,KIV:2}, w:{}, quote:{}, off:{}, unarch:{}};
 WEIGHTS.forEach(w=>state.w[w.id]=w.def);
-try{ const s=JSON.parse(localStorage.getItem("wsp-state")||"null"); if(s){Object.assign(state.pax,s.pax||{});Object.assign(state.w,s.w||{});state.quote=s.quote||{};state.off=s.off||{};if(PERIODS[s.period])state.period=s.period;} }catch(e){}
+try{ const s=JSON.parse(localStorage.getItem("wsp-state")||"null"); if(s){Object.assign(state.pax,s.pax||{});Object.assign(state.w,s.w||{});state.quote=s.quote||{};state.off=s.off||{};state.unarch=s.unarch||{};if(PERIODS[s.period])state.period=s.period;} }catch(e){}
 function save(){ try{localStorage.setItem("wsp-state",JSON.stringify(state));}catch(e){} }
 
 const $=s=>document.querySelector(s);
 const eur=n=>"€"+Math.round(n).toLocaleString("en-GB");
 const mid=a=>(a[0]+a[1])/2;
 const P=()=>PERIODS[state.period];
-const active=()=>{const a=DESTS.filter(d=>!state.off[d.id]);return a.length?a:DESTS;};
+const ARCHIVED=new Set(["cha","arc","sin"]);
+const isArch=d=>ARCHIVED.has(d.id)&&!state.unarch[d.id];
+const listed=()=>DESTS.filter(d=>!isArch(d));
+const active=()=>{const a=listed().filter(d=>!state.off[d.id]);return a.length?a:listed();};
 const totalPax=()=>Object.values(state.pax).reduce((a,b)=>a+(+b||0),0);
 
 function gf(from,to){ const p=P(); return "https://www.google.com/travel/flights?q="+encodeURIComponent(`Flights from ${from} to ${to} on ${p.in} through ${p.out}`); }
@@ -513,7 +518,9 @@ function render(){
   $("#period").innerHTML=Object.entries(PERIODS).map(([k,v])=>`<button type="button" data-p="${k}" aria-pressed="${k===state.period}">${v.label}<small>${v.sub}</small></button>`).join("");
   $("#periodNote").textContent=p.note;
 
-  $("#destpick").innerHTML=DESTS.map(d=>`<button type="button" data-d="${d.id}" style="--c:var(${d.c})" aria-pressed="${!state.off[d.id]}"><span class="dot"></span>${d.name}${d.short?' <small>shorter trip</small>':''}</button>`).join("");
+  $("#destpick").innerHTML=listed().map(d=>`<button type="button" data-d="${d.id}" style="--c:var(${d.c})" aria-pressed="${!state.off[d.id]}"><span class="dot"></span>${d.name}${d.short?' <small>shorter trip</small>':''}</button>`).join("");
+  const arch=DESTS.filter(isArch), back=DESTS.filter(d=>ARCHIVED.has(d.id)&&state.unarch[d.id]);
+  $("#archived").innerHTML=(arch.length?`Archived: ${arch.map(d=>`<button type="button" class="linkbtn" data-unarch="${d.id}">${d.name}</button>`).join(" · ")} (select one to bring it back)`:"")+(back.length?`${arch.length?" &nbsp;|&nbsp; ":""}Restored: ${back.map(d=>`<button type="button" class="linkbtn" data-arch="${d.id}">archive ${d.name}</button>`).join(" · ")}`:"");
   const res=active().map(d=>({d,r:calc(d)}));
   const costs=res.map(x=>(x.r.ppLow+x.r.ppHigh)/2), hrs=res.map(x=>x.r.hours);
   const norm=(v,arr,inv)=>{const mn=Math.min(...arr),mx=Math.max(...arr); if(mx===mn)return 1; const t=(v-mn)/(mx-mn); return inv?1-t:t;};
@@ -593,7 +600,9 @@ $("#pax").innerHTML=ORIGINS.map(o=>`<label for="pax-${o.id}">${o.name}<input typ
 $("#weights").innerHTML=WEIGHTS.map(w=>`<label for="w-${w.id}"><span>${w.label}</span><input type="range" min="0" max="5" id="w-${w.id}" data-w="${w.id}" value="${state.w[w.id]}"><span class="num" id="wv-${w.id}">${state.w[w.id]}</span></label>`).join("");
 
 document.addEventListener("click",e=>{ const b=e.target.closest("[data-p]"); if(b){state.period=b.dataset.p;save();render();}
-  const d=e.target.closest("[data-d]"); if(d){state.off[d.dataset.d]=!state.off[d.dataset.d];save();render();} });
+  const d=e.target.closest("[data-d]"); if(d){state.off[d.dataset.d]=!state.off[d.dataset.d];save();render();}
+  const u=e.target.closest("[data-unarch]"); if(u){state.unarch[u.dataset.unarch]=true;save();render();}
+  const ar=e.target.closest("[data-arch]"); if(ar){delete state.unarch[ar.dataset.arch];save();render();} });
 document.addEventListener("input",e=>{
   const t=e.target;
   if(t.dataset.pax){state.pax[t.dataset.pax]=Math.max(0,+t.value||0);}
